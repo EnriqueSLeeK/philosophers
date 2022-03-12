@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/03/11 22:00:31 by ensebast         ###   ########.fr       */
+/*   Updated: 2022/03/11 22:14:58 by ensebast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,18 @@ typedef struct s_philosopher
 	int	l_fork;
 	int	status;
 	int	time_to_die;
+	int	timer;
 }	t_philosopher;
 
 // The feast will begin
 typedef struct s_table
 {
 	t_philosopher	**phi;
-	int		**fork;
-	int		sleep_time;
-	int		eating_time;
+	int				**fork;
+	int				death_time;
+	int				sleep_time;
+	int				eating_time;
 }	t_table;
-
-// Auxiliary structure for init
-typedef	struct s_aux
-{
-	int	death;
-	int	sleep;
-	int	eat;
-}	t_aux;
 
 int	init(t_table *table, char **argv);
 
