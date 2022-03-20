@@ -6,7 +6,7 @@
 #    By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/11 22:03:20 by ensebast          #+#    #+#              #
-#    Updated: 2022/03/11 22:07:27 by ensebast         ###   ########.fr        #
+#    Updated: 2022/03/20 12:31:42 by ensebast         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,4 +16,5 @@ CFLAGS := -Werror -Wextra -Wall
 CC := clang
 
 LIB := -lpthread
+
 
