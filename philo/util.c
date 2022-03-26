@@ -1,38 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 21:46:26 by ensebast          #+#    #+#             */
-/*   Updated: 2022/03/26 00:13:52 by ensebast         ###   ########.br       */
+/*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
+/*   Updated: 2022/03/25 23:00:12 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-static void	print_usage(void)
+int	str_to_int(char *str_digit, int num)
 {
-	printf("Usage: ./philosopher <n_phil> <time_death> ");
-	printf("<time_eat> <time_sleep> <n_times_to_eat>\n");
-}
-
-int	main(int argc, char *argv[])
-{
-	t_table	table;
-
-	if (argc >= 5 && argc <= 6)
-	{
-		if (init(&table, &argv[1]) != 0)
-		{
-			begin_the_feast(&table);
-			free_up(&table);
-		}
-		else
-			print_usage();
-	}
-	else
-		print_usage();
-	return (0);
+	if (*str_digit == 0)
+		return (num);
+	num = (num * 10) + (str_digit[0] - '0');
+	if (num % 10 != (str_digit[0] - '0'))
+		return (-1);
+	return (str_to_int(&(str_digit[1]), num));
 }

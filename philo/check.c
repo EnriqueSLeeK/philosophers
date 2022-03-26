@@ -1,38 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 21:46:26 by ensebast          #+#    #+#             */
-/*   Updated: 2022/03/26 00:13:52 by ensebast         ###   ########.br       */
+/*   Created: 2022/03/25 22:50:31 by ensebast          #+#    #+#             */
+/*   Updated: 2022/03/25 22:50:48 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-static void	print_usage(void)
+int	is_number(char **str)
 {
-	printf("Usage: ./philosopher <n_phil> <time_death> ");
-	printf("<time_eat> <time_sleep> <n_times_to_eat>\n");
-}
+	int	i;
+	int	k;
 
-int	main(int argc, char *argv[])
-{
-	t_table	table;
-
-	if (argc >= 5 && argc <= 6)
+	i = 0;
+	while (str[i])
 	{
-		if (init(&table, &argv[1]) != 0)
+		k = 0;
+		if (str[i][k] == 0)
+			return (1);
+		while (str[i][k])
 		{
-			begin_the_feast(&table);
-			free_up(&table);
+			if (str[i][k] < '0' || str[i][k] > '9')
+				return (i);
+			k += 1;
 		}
-		else
-			print_usage();
+		i += 1;
 	}
-	else
-		print_usage();
-	return (0);
+	return (-1);
 }

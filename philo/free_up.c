@@ -1,38 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   free_up.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 21:46:26 by ensebast          #+#    #+#             */
-/*   Updated: 2022/03/26 00:13:52 by ensebast         ###   ########.br       */
+/*   Created: 2022/03/25 19:44:24 by ensebast          #+#    #+#             */
+/*   Updated: 2022/03/26 00:08:09 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-static void	print_usage(void)
+void	free_bmatrix(t_philosopher **matrix)
 {
-	printf("Usage: ./philosopher <n_phil> <time_death> ");
-	printf("<time_eat> <time_sleep> <n_times_to_eat>\n");
+	int	i;
+
+	i = 0;
+	while (matrix[i])
+	{
+		free(matrix[i]);
+		i += 1;
+	}
+	free(matrix);
 }
 
-int	main(int argc, char *argv[])
+void	free_up(t_table *table)
 {
-	t_table	table;
-
-	if (argc >= 5 && argc <= 6)
-	{
-		if (init(&table, &argv[1]) != 0)
-		{
-			begin_the_feast(&table);
-			free_up(&table);
-		}
-		else
-			print_usage();
-	}
-	else
-		print_usage();
-	return (0);
+	free_bmatrix(table -> phi);
+	free(table -> fork);
+	free(table -> mind);
 }

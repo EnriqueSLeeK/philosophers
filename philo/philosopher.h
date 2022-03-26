@@ -6,12 +6,16 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/03/20 12:40:55 by ensebast         ###   ########.fr       */
+/*   Updated: 2022/03/25 23:34:54 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
+
+# include <pthread.h>
+# include <stdlib.h>
+# include <stdio.h>
 
 # define SLEEP 0
 # define DEATH 1
@@ -22,6 +26,7 @@
 typedef struct s_philosopher
 {
 	int	id;
+	int	bites;
 	int	r_fork;
 	int	l_fork;
 	int	status;
@@ -33,7 +38,8 @@ typedef struct s_philosopher
 typedef struct s_table
 {
 	t_philosopher	**phi;
-	int				**fork;
+	pthread_t		*mind;
+	int				*fork;
 	int				death_time;
 	int				eating_time;
 	int				sleep_time;
@@ -41,6 +47,11 @@ typedef struct s_table
 }	t_table;
 
 // Initializer
-int	init(t_table *table, char **argv);
+void	free_bmatrix(t_philosopher **matrix);
+int		str_to_int(char *str_digit, int num);
+int		init(t_table *table, char **argv);
+void	begin_the_feast(t_table *table);
+void	free_up(t_table *table);
+int		is_number(char **str);
 
 #endif
