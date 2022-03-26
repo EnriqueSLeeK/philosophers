@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:52:39 by ensebast          #+#    #+#             */
-/*   Updated: 2022/03/25 23:06:23 by ensebast         ###   ########.br       */
+/*   Updated: 2022/03/26 12:45:37 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ static void	phil_section_init(t_philosopher *phi, int death_time, int i)
 	phi -> r_fork = 0;
 	phi -> l_fork = 0;
 	phi -> status = IDLE;
-	phi -> timer = 0;
-	phi -> time_to_die = death_time;
+	phi -> timer = death_time;
 }
 
 static t_philosopher	**init_phi(int quant, int death_time)
@@ -89,11 +88,9 @@ static int	init_dynamic_sect(t_table *table, int quant)
 
 int	init(t_table *table, char **argv)
 {
-	int	quant;
-
 	if (is_number(argv) != -1)
 		return (0);
-	quant = str_to_int(argv[0], 0);
+	table -> quant = str_to_int(argv[0], 0);
 	table -> death_time = str_to_int(argv[1], 0);
 	table -> eating_time = str_to_int(argv[2], 0);
 	table -> sleep_time = str_to_int(argv[3], 0);
@@ -101,8 +98,9 @@ int	init(t_table *table, char **argv)
 		table -> satiation = str_to_int(argv[4], 0);
 	else
 		table -> satiation = -2;
-	if (quant != -1 && table -> death_time != -1 && table -> eating_time != -1
-		&& table -> sleep_time != -1 && table -> satiation != -1)
-		return (init_dynamic_sect(table, quant));
+	if (table -> quant != -1 && table -> death_time != -1
+		&& table -> eating_time != -1 && table -> sleep_time != -1
+		&& table -> satiation != -1)
+		return (init_dynamic_sect(table, table -> quant));
 	return (0);
 }

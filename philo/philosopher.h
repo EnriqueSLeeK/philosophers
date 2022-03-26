@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/03/25 23:34:54 by ensebast         ###   ########.br       */
+/*   Updated: 2022/03/26 13:57:24 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef struct s_philosopher
 	int	l_fork;
 	int	status;
 	int	timer;
-	int	time_to_die;
 }	t_philosopher;
 
 // The feast will begin
@@ -40,11 +39,18 @@ typedef struct s_table
 	t_philosopher	**phi;
 	pthread_t		*mind;
 	int				*fork;
+	int				quant;
 	int				death_time;
 	int				eating_time;
 	int				sleep_time;
 	int				satiation;
 }	t_table;
+
+typedef struct	s_aux
+{
+	t_table			*table;
+	t_philosopher	*phil;
+}	t_aux;
 
 // Initializer
 void	free_bmatrix(t_philosopher **matrix);
