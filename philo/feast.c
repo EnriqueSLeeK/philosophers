@@ -6,30 +6,15 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 18:42:11 by ensebast          #+#    #+#             */
-/*   Updated: 2022/03/26 13:58:35 by ensebast         ###   ########.br       */
+/*   Updated: 2022/04/03 00:36:50 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
 static void	*feast(void *table);
-static void	free_aux(t_aux **aux);
+static void	terminate_feast(t_aux *tab);
 static int	prepare_aux(t_table *table, t_aux ***aux);
-
-static void	free_aux(t_aux **aux)
-{
-	int	i;
-
-	if (aux == 0)
-		return ;
-	i = 0;
-	while (aux[i])
-	{
-		free(aux[i]);
-		i += 1;
-	}
-	free(aux);
-}
 
 static int	prepare_aux(t_table *table, t_aux ***aux)
 {
@@ -45,7 +30,7 @@ static int	prepare_aux(t_table *table, t_aux ***aux)
 		tmp = malloc(sizeof(t_aux));
 		if (tmp == 0)
 		{
-			free_aux(*aux);
+			free_bmatrix((void **)*aux);
 			return (0);
 		}
 		tmp -> table = table;
@@ -61,23 +46,39 @@ void	begin_the_feast(t_table *table)
 {
 	int				i;
 	int				k;
-	void			*ret;
 	t_aux			**aux;
 
 	i = 0;
 	if (prepare_aux(table, &aux))
 	{
-		while ((table -> phi)[i])
+		if (mutex_start(table -> mutex_list, table -> quant))
 		{
-			if (pthread_create(&(table -> mind[i]), NULL, feast, aux[i]) != 0)
-				break ;
-			i += 1;
+			while ((table -> phi)[i])
+			{
+				if (pthread_create(&(table -> mind[i]), NULL, feast, aux[i]) != 0)
+					break ;
+				i += 1;
+			}
+			k = i;
+			while (k-- > 0)
+				if (pthread_join(table -> mind[k], NULL) != 0)
+					;
+			free_bmatrix((void **)aux);
+			mutex_destroy(table -> mutex_list, table -> quant);
 		}
-		k = i;
-		while (k-- > 0)
-			if (pthread_join(table -> mind[k], &ret) != 0)
-				printf("thread join failure\n");
-		free_aux(aux);
+	}
+}
+
+static void	terminate_feast(t_aux *tab)
+{
+	int	i;
+
+	i = 0;
+	while (i < (tab -> table)-> quant)
+	{
+		if (i != (tab -> phil)-> id)
+			pthread_detach((tab -> table)-> mind[i]);
+		i += 1;
 	}
 }
 
@@ -86,10 +87,22 @@ static void	*feast(void *val)
 	t_aux	*tab;
 
 	tab = (t_aux *)val;
-	/*
+	gettimeofday(&(tab -> time), 0);
 	while (1)
 	{
+		take_fork(tab, LEFT);
+		take_fork(tab, RIGHT);
+		if ((tab -> phil)-> r_fork && (tab -> phil)-> l_fork)
+			eat(tab);
+		else
+			release_fork(tab);
+		ft_sleep((tab -> table)-> sleep_time);
+		if ((tab -> table)-> satiation != -2
+			&& (tab -> table)-> satiation <= (tab -> phil)-> bites)
+		{
+			terminate_feast(tab);
+			break ;
+		}
 	}
-	*/
-	return ("a");
+	return ((void *)0);
 }

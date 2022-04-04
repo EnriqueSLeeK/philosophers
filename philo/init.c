@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:52:39 by ensebast          #+#    #+#             */
-/*   Updated: 2022/03/26 12:45:37 by ensebast         ###   ########.br       */
+/*   Updated: 2022/03/30 17:05:45 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static t_philosopher	**init_phi(int quant, int death_time)
 		phi = malloc(sizeof(t_philosopher));
 		if (phi == 0)
 		{
-			free_bmatrix(phi_buff);
+			free_bmatrix((void **)phi_buff);
 			return (0);
 		}
 		phil_section_init(phi, death_time, i);
@@ -79,8 +79,16 @@ static int	init_dynamic_sect(t_table *table, int quant)
 	table -> mind = malloc(quant * sizeof(pthread_t));
 	if (table -> mind == 0)
 	{
-		free_bmatrix(table -> phi);
+		free_bmatrix((void **)table -> phi);
 		free(table -> fork);
+		return (0);
+	}
+	table -> mutex_list = mutex_mem(quant);
+	if (table -> mutex_list == 0)
+	{
+		free_bmatrix((void **)table -> phi);
+		free(table -> fork);
+		free(table -> mind);
 		return (0);
 	}
 	return (1);

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_up.c                                          :+:      :+:    :+:   */
+/*   mem_util.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 19:44:24 by ensebast          #+#    #+#             */
-/*   Updated: 2022/03/26 13:53:55 by ensebast         ###   ########.br       */
+/*   Updated: 2022/03/30 17:07:35 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	free_bmatrix(t_philosopher **matrix)
+void	free_bmatrix(void **matrix)
 {
 	int	i;
 
@@ -27,7 +27,8 @@ void	free_bmatrix(t_philosopher **matrix)
 
 void	free_up(t_table *table)
 {
-	free_bmatrix(table -> phi);
+	free_bmatrix((void **)table -> phi);
+	free_bmatrix((void **)table -> mutex_list);
 	free(table -> fork);
 	free(table -> mind);
 }

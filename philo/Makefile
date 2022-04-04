@@ -6,19 +6,19 @@
 #    By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/11 22:03:20 by ensebast          #+#    #+#              #
-#    Updated: 2022/03/26 00:14:15 by ensebast         ###   ########.br        #
+#    Updated: 2022/04/03 00:32:07 by ensebast         ###   ########.br        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := philo
 
-CFLAGS := -g #-Werror -Wextra -Wall
+CFLAGS := -g -Werror -Wextra -Wall
 CC := clang
 
 LIB := -lpthread
 
-FILES := init.c main.c free_up.c check.c util.c\
-		 feast.c
+FILES := init.c main.c mem_util.c check.c util.c\
+		 feast.c mutex_init.c eat.c
 OBJ := $(addprefix ./obj/, $(FILES:c=o))
 
 .PHONY: all clean fclean re
