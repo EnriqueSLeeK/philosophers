@@ -1,39 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   sleep_think.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 21:46:26 by ensebast          #+#    #+#             */
-/*   Updated: 2022/04/19 01:24:26 by ensebast         ###   ########.br       */
+/*   Created: 2022/04/19 01:04:00 by ensebast          #+#    #+#             */
+/*   Updated: 2022/04/19 01:15:41 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-static void	print_usage(void)
+void	sleeping(long int time, int id)
 {
-	printf("Usage: ./philosopher <n_phil> <time_death> \
-<time_eat> <time_sleep> <n_times_to_eat>\n");
-	printf("All values are integers!\n");
+	struct timeval	timestamp;
+
+	gettimeofday(&timestamp, 0);
+	ft_sleep(time);
+	print_msg(id, &timestamp, "is sleeping");
 }
 
-int	main(int argc, char *argv[])
+void	thinking(long int time, int	id)
 {
-	t_table	table;
+	struct timeval	timestamp;
 
-	if (argc >= 5 && argc <= 6)
-	{
-		if (init(&table, &argv[1]) != 0)
-		{
-			begin_the_feast(&table);
-			free_up(&table);
-		}
-		else
-			print_usage();
-	}
-	else
-		print_usage();
-	return (0);
+
+	gettimeofday(&timestamp, 0);
+	ft_sleep(time);
+	print_msg(id, &timestamp, "is thinking");
 }

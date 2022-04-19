@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/04/02 23:40:20 by ensebast         ###   ########.br       */
+/*   Updated: 2022/04/19 01:08:04 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,28 @@ typedef struct s_aux
 }	t_aux;
 
 // Initializer
-void			print_msg(int id, struct timeval *time, char *msg);
+int				init(t_table *table, char **argv);
+
+// Memory
 void			mutex_destroy(pthread_mutex_t **list, int quant);
 int				mutex_start(pthread_mutex_t **list, int quant);
+void			begin_the_feast(t_table *table);
+void			free_up(t_table *table);
+pthread_mutex_t	**mutex_mem(int quant);
+
+// Actions
+void			eat(t_aux *tab);
+void			thinking(long int time, int	id);
+void			sleeping(long int time, int id);
+void			take_fork(t_aux *tab, int side);
+void			release_fork(t_aux *aux);
+
+// Util
+void			print_msg(int id, struct timeval *time, char *msg);
 long int		str_to_int(char *str_digit, long int num);
 int				index_adjust(int index, int quant);
-int				init(t_table *table, char **argv);
-void			begin_the_feast(t_table *table);
-void			take_fork(t_aux *tab, int side);
-void			free_bmatrix(void **matrix);
-void			release_fork(t_aux *aux);
-void			free_up(t_table *table);
-void			ft_sleep(long int time);
-pthread_mutex_t	**mutex_mem(int quant);
 int				is_number(char **str);
-void			eat(t_aux *tab);
+void			free_bmatrix(void **matrix);
+void			ft_sleep(long int time);
 
 #endif

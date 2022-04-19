@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 18:42:11 by ensebast          #+#    #+#             */
-/*   Updated: 2022/04/03 00:36:50 by ensebast         ###   ########.br       */
+/*   Updated: 2022/04/19 01:14:56 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,14 @@ static void	*feast(void *val)
 		if ((tab -> phil)-> r_fork && (tab -> phil)-> l_fork)
 			eat(tab);
 		else
+		{
 			release_fork(tab);
-		ft_sleep((tab -> table)-> sleep_time);
-		if ((tab -> table)-> satiation != -2
+			thinking((tab -> table)-> sleep_time, (tab -> phil)-> id);
+		}
+		sleeping((tab -> table)->sleep_time, (tab -> phil)-> id);
+		if (((tab -> table)-> satiation != -2
 			&& (tab -> table)-> satiation <= (tab -> phil)-> bites)
+			|| (tab -> phil)-> status == DEATH)
 		{
 			terminate_feast(tab);
 			break ;
