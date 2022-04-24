@@ -6,7 +6,7 @@
 #    By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/11 22:03:20 by ensebast          #+#    #+#              #
-#    Updated: 2022/04/19 01:15:18 by ensebast         ###   ########.br        #
+#    Updated: 2022/04/23 21:07:02 by ensebast         ###   ########.br        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ CC := clang
 LIB := -lpthread
 
 FILES := init.c main.c mem_util.c check.c util.c\
-		 feast.c mutex_init.c eat.c sleep_think.c
+		 feast.c mutex_init.c eat.c sleep_think.c\
+		 check_death.c action.c
 OBJ := $(addprefix ./obj/, $(FILES:c=o))
 
 .PHONY: all clean fclean re

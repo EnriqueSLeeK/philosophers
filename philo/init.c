@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:52:39 by ensebast          #+#    #+#             */
-/*   Updated: 2022/03/30 17:05:45 by ensebast         ###   ########.br       */
+/*   Updated: 2022/04/23 21:08:20 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,14 @@ static int	*init_fork(int quant)
 	return (buff);
 }
 
-static void	phil_section_init(t_philosopher *phi, int death_time, int i)
+static void	phil_section_init(t_philosopher *phi, int i)
 {
 	phi -> id = i;
 	phi -> bites = 0;
-	phi -> r_fork = 0;
-	phi -> l_fork = 0;
-	phi -> status = IDLE;
-	phi -> timer = death_time;
+	phi -> status = HUNGRY;
 }
 
-static t_philosopher	**init_phi(int quant, int death_time)
+static t_philosopher	**init_phi(int quant)
 {
 	int				i;
 	t_philosopher	*phi;
@@ -57,7 +54,7 @@ static t_philosopher	**init_phi(int quant, int death_time)
 			free_bmatrix((void **)phi_buff);
 			return (0);
 		}
-		phil_section_init(phi, death_time, i);
+		phil_section_init(phi, i);
 		phi_buff[i] = phi;
 		i += 1;
 	}
@@ -70,7 +67,7 @@ static int	init_dynamic_sect(t_table *table, int quant)
 	table -> fork = init_fork(quant);
 	if (table -> fork == 0)
 		return (0);
-	table -> phi = init_phi(quant, table -> death_time);
+	table -> phi = init_phi(quant);
 	if (table -> phi == 0)
 	{
 		free(table -> fork);

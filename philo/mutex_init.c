@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:43:47 by ensebast          #+#    #+#             */
-/*   Updated: 2022/03/30 17:09:31 by ensebast         ###   ########.br       */
+/*   Updated: 2022/04/23 20:03:52 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ pthread_mutex_t	**mutex_mem(int quant)
 	pthread_mutex_t	*tmp;
 	int				i;
 
-	buff = malloc(sizeof(pthread_mutex_t *) * (quant + 1));
+	buff = malloc(sizeof(pthread_mutex_t *) * (quant + 2));
 	i = 0;
-	while (i < quant)
+	while (i <= quant)
 	{
 		tmp = malloc(sizeof(pthread_mutex_t));
 		if (tmp == 0)
@@ -31,7 +31,7 @@ pthread_mutex_t	**mutex_mem(int quant)
 		buff[i] = tmp;
 		i += 1;
 	}
-	buff[quant] = 0;
+	buff[quant + 1] = 0;
 	return (buff);
 }
 
@@ -40,7 +40,7 @@ int	mutex_start(pthread_mutex_t **list, int quant)
 	int	i;
 
 	i = 0;
-	while (i < quant)
+	while (i <= quant)
 	{
 		if (pthread_mutex_init(list[i], 0) == -1)
 		{
@@ -57,7 +57,7 @@ void	mutex_destroy(pthread_mutex_t **list, int quant)
 	int	i;
 
 	i = 0;
-	while (i < quant)
+	while (i <= quant)
 	{
 		pthread_mutex_destroy(list[i]);
 		i += 1;

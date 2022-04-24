@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 18:42:11 by ensebast          #+#    #+#             */
-/*   Updated: 2022/04/19 01:14:56 by ensebast         ###   ########.br       */
+/*   Updated: 2022/04/23 22:12:03 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	begin_the_feast(t_table *table)
 	{
 		if (mutex_start(table -> mutex_list, table -> quant))
 		{
+			gettimeofday(&(table -> glob_time), 0);
 			while ((table -> phi)[i])
 			{
 				if (pthread_create(&(table -> mind[i]), NULL, feast, aux[i]) != 0)
@@ -61,8 +62,7 @@ void	begin_the_feast(t_table *table)
 			}
 			k = i;
 			while (k-- > 0)
-				if (pthread_join(table -> mind[k], NULL) != 0)
-					;
+				pthread_join(table -> mind[k], NULL);
 			free_bmatrix((void **)aux);
 			mutex_destroy(table -> mutex_list, table -> quant);
 		}
@@ -77,8 +77,27 @@ static void	terminate_feast(t_aux *tab)
 	while (i < (tab -> table)-> quant)
 	{
 		if (i != (tab -> phil)-> id)
-			pthread_detach((tab -> table)-> mind[i]);
+			(tab -> table)-> phi[i] -> status = HORROR;
 		i += 1;
+	}
+}
+
+static void	simulate(t_aux *tab)
+{
+	while (check_phil_list((tab -> table) -> phi))
+	{
+		pthread_mutex_lock((tab -> table)-> mutex_list[tab -> table -> quant]);
+		if (((tab -> table)-> satiation != -2
+			&& (tab -> table)-> satiation <= (tab -> phil)-> bites)
+		   || check_death(tab))
+		{
+			(tab -> phil)->status = DEATH;
+			terminate_feast(tab);
+			pthread_mutex_unlock((tab -> table)-> mutex_list[tab -> table -> quant]);
+			break ;
+		}
+		pthread_mutex_unlock((tab -> table)-> mutex_list[tab -> table -> quant]);
+		action(tab);
 	}
 }
 
@@ -88,25 +107,12 @@ static void	*feast(void *val)
 
 	tab = (t_aux *)val;
 	gettimeofday(&(tab -> time), 0);
-	while (1)
+	if ((tab -> table)->quant == 1)
 	{
-		take_fork(tab, LEFT);
-		take_fork(tab, RIGHT);
-		if ((tab -> phil)-> r_fork && (tab -> phil)-> l_fork)
-			eat(tab);
-		else
-		{
-			release_fork(tab);
-			thinking((tab -> table)-> sleep_time, (tab -> phil)-> id);
-		}
-		sleeping((tab -> table)->sleep_time, (tab -> phil)-> id);
-		if (((tab -> table)-> satiation != -2
-			&& (tab -> table)-> satiation <= (tab -> phil)-> bites)
-			|| (tab -> phil)-> status == DEATH)
-		{
-			terminate_feast(tab);
-			break ;
-		}
+		ft_sleep((tab -> table) -> death_time);
+		check_death(tab);
 	}
+	else
+		simulate(tab);
 	return ((void *)0);
 }
