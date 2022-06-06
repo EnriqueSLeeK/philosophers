@@ -1,27 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sleep_think.c                                      :+:      :+:    :+:   */
+/*   check_num.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/19 01:04:00 by ensebast          #+#    #+#             */
-/*   Updated: 2022/04/23 21:05:31 by ensebast         ###   ########.br       */
+/*   Created: 2022/03/25 22:50:31 by ensebast          #+#    #+#             */
+/*   Updated: 2022/06/06 15:23:51 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	sleeping(t_time *glob_time, long int time, int id, int *status)
+int	check_argv_is_number(char **str)
 {
-	ft_sleep(time);
-	print_msg(id, glob_time, "is sleeping");
-	*status = ENLIGHT;
-}
+	int	i;
+	int	k;
 
-void	thinking(t_time *glob_time, long int time, int id, int *status)
-{
-	ft_sleep(time);
-	print_msg(id, glob_time, "is thinking");
-	*status = HUNGRY;
+	if (str == 0 || *str == 0 || **str == 0)
+		return (1);
+	i = 0;
+	while (str[i])
+	{
+		k = 0;
+		while (str[i][k])
+		{
+			if (str[i][k] < '0' || str[i][k] > '9')
+				return (i);
+			k += 1;
+		}
+		i += 1;
+	}
+	return (-1);
 }
