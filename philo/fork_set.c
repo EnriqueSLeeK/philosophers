@@ -5,21 +5,21 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/27 22:37:14 by ensebast          #+#    #+#             */
-/*   Updated: 2022/04/27 22:38:16 by ensebast         ###   ########.br       */
+/*   Created: 2022/06/22 18:33:12 by ensebast          #+#    #+#             */
+/*   Updated: 2022/06/22 18:36:50 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	fork_set(int quant, int *fork)
+void	fork_set(int quant, int *list)
 {
 	int	i;
 
 	i = 0;
-	while (quant > i)
+	while (i < quant)
 	{
-		fork[i] = 1;
+		list[i] = 1;
 		i += 1;
 	}
 }

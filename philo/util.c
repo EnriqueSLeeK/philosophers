@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/04/27 22:08:21 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/22 17:17:01 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ long int	get_mstime(t_time *old, t_time *new)
 		+ (new -> tv_usec - old->tv_usec) / 1000);
 }
 
-void	print_msg(int id, t_time *time, char *msg)
+void	print_msg(int id, t_time *time, char *msg, pthread_mutex_t *write)
 {
 	t_time	time_now;
 
+	pthread_mutex_lock(write);
 	gettimeofday(&time_now, 0);
 	printf("%ld %d %s\n", get_mstime(time, &time_now), id + 1, msg);
 }
@@ -43,7 +44,5 @@ void	msleep(long int time)
 
 int	index_adjust(int index, int quant)
 {
-	if (index < 0)
-		return (quant - 1);
 	return (index % quant);
 }

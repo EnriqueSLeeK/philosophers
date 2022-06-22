@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:46:26 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/06 18:51:00 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/22 19:20:42 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,36 @@ static void	print_usage(void)
 <time_eat> <time_sleep> <n_times_to_eat>\n");
 }
 
+// 1 for failure | 0 for success
+static int	initialize(int argc, char **argv, t_table *table, t_time_inf *time)
+{
+	if (init_time(argv + 1, time)
+		&& init_table(argv + 1, argc, table)
+		&& init_phil(table->phi, table, time)
+		&& init_mutex(table))
+		return (0);
+	return (1);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_time_inf	time;
 	t_table		table;
 
-	if (argc < 5 || argc > 6)
-		print_usage();
-	argv += 1;
-	if (check_argv_is_number(argv) == -1)
+	if ((argc < 5 || argc > 6)
+		|| check_argv_is_number(argv + 1) != -1)
 	{
-		if (init_time(argv, &time)
-			&& init_table(argv, argc, &table)
-			&& init_phil(table.phi, table.quant)
-			&& init_mutex(table.mutex_list, table.quant))
-		{
-			fork_set(table.quant, table.fork);
-			begin_feast(&table, &time);
-			return (0);
-		}
-		else
-			print_usage();
-	}
-	else
 		print_usage();
-	return (1);
+		return (1);
+	}
+	if (initialize(argc, argv, &table, &time))
+	{
+		free_up(&table);
+		return (1);
+	}
+	fork_set(table.quant, table.fork_list);
+	if (table.quant > 0)
+		start_routine(&table);
+	free_up(&table);
+	return (0);
 }

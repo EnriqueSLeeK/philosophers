@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mem_util.c                                         :+:      :+:    :+:   */
+/*   alloc_util.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:27:04 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/06 15:27:50 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/08 17:39:31 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	**alloc_matrix(long int quant, long int ptr_size, long int size)
 
 	counter = 0;
 	data = malloc(quant * ptr_size);
+	if (data == 0)
+		return (0);
 	while (counter < quant)
 	{
 		buff = malloc(size);
