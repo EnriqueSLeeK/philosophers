@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 22:30:08 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/26 00:40:23 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/26 15:04:05 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,17 +103,15 @@ static void	*std_routine(void *data)
 
 	phil = (t_philosopher *)data;
 	time = phil -> time;
-	if (phil->id % 2 != 0)
-		msleep(time -> eating_time);
 	gettimeofday(&(phil -> last_bite), 0);
 	pthread_create(&tid, 0, watcher_routine, data);
 	pthread_detach(tid);
+	if (phil->id % 2 != 0)
+		msleep(time -> eating_time);
 	while (take_fork(phil) && eat(phil, time)
 		&& sleeping(phil, time, SLEEPY)
 		&& thinking(phil, THINKING))
-	{
 		continue ;
-	}
 	release_fork(phil);
 	return (0);
 }
