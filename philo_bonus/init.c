@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 18:36:58 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/22 19:58:49 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/26 00:37:34 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@ int	init_phil(t_philosopher **phil, t_table *table, t_time_inf *time)
 	{
 		phil[i]->id = i;
 		phil[i]->bites = 0;
-		phil[i]->status = HUNGRY;
 		phil[i]->write = &(table -> write);
 		phil[i]->sim_end = &(table -> sim_end);
-		phil[i]->forks = &(table -> forks);
 		phil[i]->right = &(table -> fork_list[i]);
 		phil[i]->left = &(table -> fork_list[
 				index_adjust(i + 1, table -> quant)]);
@@ -54,11 +52,16 @@ int	init_phil(t_philosopher **phil, t_table *table, t_time_inf *time)
 
 int	init_mutex(t_table *table)
 {
-	if (pthread_mutex_init(&(table -> sim_end), 0))
-		return (0);
+	int	i;
+
+	i = 0;
+	while (i < table -> quant)
+	{
+		if (pthread_mutex_init(&(table -> fork_list[i]), 0))
+			return (0);
+		i += 1;
+	}
 	if (pthread_mutex_init(&(table -> write), 0))
-		return (0);
-	if (pthread_mutex_init(&(table -> forks), 0))
 		return (0);
 	return (1);
 }
@@ -72,7 +75,8 @@ int	init_table(char **argv, int argc, t_table *table)
 		convert_argv(&(table -> satiation), argv[4]);
 	else
 		table -> satiation = -2;
-	table -> fork_list = malloc(table -> quant * sizeof(int));
+	table -> sim_end = 0;
+	table -> fork_list = malloc(table -> quant * sizeof(pthread_mutex_t));
 	table -> phi = (t_philosopher **)alloc_matrix(table -> quant,
 			sizeof(t_philosopher *),
 			sizeof(t_philosopher));

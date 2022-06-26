@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/22 17:17:01 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/26 00:38:02 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,20 @@ long int	get_mstime(t_time *old, t_time *new)
 		+ (new -> tv_usec - old->tv_usec) / 1000);
 }
 
-void	print_msg(int id, t_time *time, char *msg, pthread_mutex_t *write)
+int	print_msg(t_philosopher *phil, char *msg)
 {
 	t_time	time_now;
 
-	pthread_mutex_lock(write);
 	gettimeofday(&time_now, 0);
-	printf("%ld %d %s\n", get_mstime(time, &time_now), id + 1, msg);
+	pthread_mutex_lock(phil->write);
+	if (*(phil -> sim_end))
+	{
+		pthread_mutex_unlock(phil->write);
+		return (1);
+	}
+	printf("%ld %d %s\n", get_mstime(phil->glob_time, &time_now),
+		phil->id + 1, msg);
+	return (0);
 }
 
 long int	str_to_int(char *str_digit, long int num)
