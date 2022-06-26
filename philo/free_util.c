@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 19:20:21 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/22 19:58:21 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/26 00:38:14 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,15 @@ static void	check_and_free_matrix(void **data, long int n)
 
 static void	pthread_mdestroy(t_table *table)
 {
+	int	i;
+
+	i = 0;
+	while (i < table -> quant)
+	{
+		pthread_mutex_destroy(&(table -> fork_list[i]));
+		i += 1;
+	}
 	pthread_mutex_destroy(&(table -> write));
-	pthread_mutex_destroy(&(table -> sim_end));
-	pthread_mutex_destroy(&(table -> forks));
 }
 
 void	free_bmatrix(void **matrix, long int n)
@@ -41,5 +47,6 @@ void	free_bmatrix(void **matrix, long int n)
 void	free_up(t_table *table)
 {
 	pthread_mdestroy(table);
+	free(table -> fork_list);
 	check_and_free_matrix((void **)(table -> phi), table -> quant);
 }

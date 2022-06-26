@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 22:30:08 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/22 20:09:46 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/26 00:40:23 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,21 @@ static int	check_bites(t_table *table);
 static void	*eating_count_routine(void *data);
 
 // Thread id
-void	start_routine(t_table *table)
+void	start_routine(t_table *table, pthread_t *tid, t_time *glob_time)
 {
-	t_time		glob_time;
-	pthread_t	tid;
 	int			n;
 
-	gettimeofday(&glob_time, 0);
-	pthread_mutex_lock(&(table -> sim_end));
 	if (table -> satiation > -1)
-	{
-		pthread_create(&tid, 0, eating_count_routine, (void *)(table));
-		pthread_detach(tid);
-	}
+		pthread_create(tid, 0, eating_count_routine, (void *)(table));
 	n = 0;
+	gettimeofday(glob_time, 0);
 	while (n < table -> quant)
 	{
-		(table -> phi[n])->glob_time = &glob_time;
-		pthread_create(&tid, 0, std_routine, (void *)(table -> phi[n]));
-		pthread_detach(tid);
+		(table -> phi[n])->glob_time = glob_time;
+		pthread_create(&((table -> phi[n])->tid), 0,
+			std_routine, (void *)(table -> phi[n]));
 		n += 1;
 	}
-	pthread_mutex_lock(&(table -> sim_end));
-	pthread_mutex_unlock(&(table -> sim_end));
 }
 
 static int	check_bites(t_table *table)
@@ -49,30 +41,28 @@ static int	check_bites(t_table *table)
 	int				i;
 
 	i = 0;
-	while (i < table -> quant)
+	while (table -> sim_end == 0 && i < table -> quant)
 	{
 		if ((table -> phi[i])->bites < table -> satiation)
-			return (1);
+			return (0);
 		i += 1;
 	}
-	return (0);
+	return (1);
 }
 
 // Check how many times a philoshopher ate
 static void	*eating_count_routine(void *data)
 {
-	int		flag;
 	t_table	*table;
 
-	flag = 1;
 	table = (t_table *)data;
-	while (flag)
+	while (1)
 	{
-		flag = check_bites(table);
+		if (check_bites(table))
+			break ;
 		usleep(300);
 	}
-	pthread_mutex_lock(&(table -> write));
-	pthread_mutex_unlock(&(table -> sim_end));
+	table -> sim_end = 1;
 	return (0);
 }
 
@@ -93,11 +83,14 @@ static void	*watcher_routine(void *data)
 			>= (phil->time)->death_time)
 		{
 			flag = 0;
-			print_msg(phil -> id, phil -> glob_time, "is dead", phil -> write);
-			pthread_mutex_unlock(phil -> sim_end);
+			print_msg(phil, DEATH);
+			*(phil -> sim_end) = 1;
+			pthread_mutex_unlock(phil -> write);
+			break ;
 		}
 		pthread_mutex_unlock(&(phil -> eating));
 	}
+	pthread_mutex_unlock(&(phil -> eating));
 	return (0);
 }
 
@@ -110,15 +103,17 @@ static void	*std_routine(void *data)
 
 	phil = (t_philosopher *)data;
 	time = phil -> time;
+	if (phil->id % 2 != 0)
+		msleep(time -> eating_time);
 	gettimeofday(&(phil -> last_bite), 0);
 	pthread_create(&tid, 0, watcher_routine, data);
 	pthread_detach(tid);
-	while (1)
+	while (take_fork(phil) && eat(phil, time)
+		&& sleeping(phil, time, SLEEPY)
+		&& thinking(phil, THINKING))
 	{
-		take_fork(phil);
-		eat(phil, time);
-		misc_action(phil, time, "is sleeping");
-		misc_action(phil, time, "is thinking");
+		continue ;
 	}
+	release_fork(phil);
 	return (0);
 }
