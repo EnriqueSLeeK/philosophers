@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 22:30:08 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/30 23:35:58 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 14:59:31 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,26 +70,27 @@ static void	*eating_count_routine(void *data)
 // Check if the philoshopher is dead
 static void	*watcher_routine(void *data)
 {
-	int				flag;
 	t_philosopher	*phil;
 	t_time			time_now;
 
-	flag = 1;
 	phil = (t_philosopher *)data;
-	while (flag)
+	while (1)
 	{
-		gettimeofday(&time_now, 0);
+		if (*(phil -> sim_end))
+			break ;
 		pthread_mutex_lock(&(phil -> eating));
+		gettimeofday(&time_now, 0);
 		if (get_mstime(&(phil -> last_bite), &time_now)
 			>= (phil->time)->death_time)
 		{
-			flag = 0;
 			print_msg(phil, DEATH);
 			*(phil -> sim_end) = 1;
 			pthread_mutex_unlock(phil -> write);
+			break ;
 		}
 		pthread_mutex_unlock(&(phil -> eating));
 	}
+	pthread_mutex_unlock(&(phil -> eating));
 	return (0);
 }
 
