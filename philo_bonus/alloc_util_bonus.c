@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   alloc_util.c                                       :+:      :+:    :+:   */
+/*   alloc_util_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 15:27:04 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/08 17:39:31 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 01:49:48 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "philosopher_bonus.h"
 
 void	**alloc_matrix(long int quant, long int ptr_size, long int size)
 {

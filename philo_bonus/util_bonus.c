@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.c                                             :+:      :+:    :+:   */
+/*   util_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/30 22:49:24 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 01:49:06 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "philosopher_bonus.h"
 
-long int	get_mstime(t_time *old, t_time *new)
+long int	get_delta(t_time *old, t_time *new)
 {
 	return ((new->tv_sec - old->tv_sec) * 1000
 		+ (new -> tv_usec - old->tv_usec) / 1000);
@@ -24,11 +24,7 @@ int	print_msg(t_philosopher *phil, char *msg)
 
 	gettimeofday(&time_now, 0);
 	sem_wait(phil->write);
-	if ((phil -> sim_end)->__align != 1)
-	{
-		return (1);
-	}
-	printf("%ld %d %s\n", get_mstime(phil->glob_time, &time_now),
+	printf("%ld %d %s\n", get_delta(phil->glob_time, &time_now),
 		phil->id + 1, msg);
 	return (0);
 }

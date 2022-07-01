@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosopher.h                                      :+:      :+:    :+:   */
+/*   philosopher_bonus.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/30 23:01:32 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 02:06:52 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHER_H
-# define PHILOSOPHER_H
+#ifndef PHILOSOPHER_BONUS_H
+# define PHILOSOPHER_BONUS_H
 
 # include <semaphore.h>
 # include <sys/time.h>
@@ -28,10 +28,9 @@
 # define SLEEPY "is sleeping"
 # define FORK "has taken a fork"
 
+# define S_TERM "termination"
 # define S_WRITE "write"
 # define S_FORK "fork"
-# define S_END "end"
-# define S_SATISFACTION "satiation"
 
 # define S_FLAG 0777
 
@@ -50,13 +49,13 @@ typedef struct s_philosopher
 {
 	pid_t			pid;
 	int				id;
+	int				eat;
 	int				bites;
 	int				quant;
 	long int		satiation;
 	sem_t			*write;
 	sem_t			*forks;
-	sem_t			*sim_end;
-	sem_t			*satisfaction;
+	sem_t			*ready_to_die;
 	t_time			last_bite;
 	t_time			*glob_time;
 	t_time_inf		*time;
@@ -66,10 +65,9 @@ typedef struct s_philosopher
 typedef struct s_table
 {
 	t_philosopher	**phi;
-	sem_t			*fork_list;
 	sem_t			*write;
-	sem_t			*sim_end;
-	sem_t			*satisfaction;
+	sem_t			*forks;
+	sem_t			*ready_to_die;
 	long int		quant;
 	long int		satiation;
 }	t_table;
@@ -98,8 +96,8 @@ int				sleeping(t_philosopher *phil, t_time_inf *time, char *msg);
 // Printing msg
 int				print_msg(t_philosopher *phil, char *msg);
 
-// Terminate all phil
-void			terminate_all_phil(t_table *table);
+// Wait and kill
+void			wait_and_kill(t_table *table);
 
 // Memory
 void			clean_child(t_table *table);
@@ -113,9 +111,8 @@ int				check_argv_is_number(char **str);
 void			**alloc_matrix(long int quant,
 					long int ptr_size, long int size);
 
-void			wait_phil(t_table *table);
 long int		str_to_int(char *str_digit, long int num);
-long int		get_mstime(t_time *old, t_time *new);
+long int		get_delta(t_time *old, t_time *new);
 int				index_adjust(int index, int quant);
 void			msleep(long int time);
 #endif

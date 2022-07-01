@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_util.c                                        :+:      :+:    :+:   */
+/*   free_util_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 19:20:21 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/30 22:41:33 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 01:49:42 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "philosopher_bonus.h"
 
 static void	check_and_free_matrix(void **data, long int n)
 {
@@ -20,14 +20,9 @@ static void	check_and_free_matrix(void **data, long int n)
 
 static void	sem_destroyer(t_table *table)
 {
-	sem_close(table -> fork_list);
-	sem_close(table -> sim_end);
-	sem_close(table -> satisfaction);
+	sem_close(table -> ready_to_die);
+	sem_close(table -> forks);
 	sem_close(table -> write);
-	sem_unlink(S_SATISFACTION);
-	sem_unlink(S_WRITE);
-	sem_unlink(S_FORK);
-	sem_unlink(S_END);
 }
 
 void	free_bmatrix(void **matrix, long int n)
@@ -45,10 +40,7 @@ void	free_bmatrix(void **matrix, long int n)
 
 void	clean_child(t_table *table)
 {
-	sem_close(table -> fork_list);
-	sem_close(table -> sim_end);
-	sem_close(table -> satisfaction);
-	sem_close(table -> write);
+	sem_destroyer(table);
 	check_and_free_matrix((void **)(table -> phi), table -> quant);
 }
 

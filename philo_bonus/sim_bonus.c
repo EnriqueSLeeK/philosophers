@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sim.c                                              :+:      :+:    :+:   */
+/*   sim_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 22:30:08 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/30 23:09:28 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 02:05:51 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "philosopher_bonus.h"
 
 static void	std_routine(t_philosopher *data);
 static void	*watcher_routine(void *data);
 
-// Thread id
 void	start_routine(t_table *table, t_time *glob_time)
 {
 	int	n;
@@ -29,7 +28,6 @@ void	start_routine(t_table *table, t_time *glob_time)
 		if ((table -> phi[n])->pid == 0)
 		{
 			std_routine(table -> phi[n]);
-			clean_child(table);
 			exit(1);
 		}
 		n += 1;
@@ -40,26 +38,27 @@ void	start_routine(t_table *table, t_time *glob_time)
 static void	*watcher_routine(void *data)
 {
 	t_philosopher	*phil;
-	t_time			time_now;
+	t_time_inf		*time;
+	t_time			now;
+	int				i;
 
 	phil = (t_philosopher *)data;
+	time = phil -> time;
+	i = 0;
 	while (1)
 	{
-		gettimeofday(&time_now, 0);
-		if ((phil -> satisfaction)->__align == phil -> quant)
-		{
-			sem_wait(phil -> sim_end);
-			break ;
-		}
-		if ((phil -> sim_end)->__align == 1
-			&& get_mstime(&(phil -> last_bite), &time_now)
-			>= (phil->time)->death_time)
+		gettimeofday(&now, 0);
+		if (phil -> eat == 0
+			&& get_delta(&(phil -> last_bite), &now) >= time -> death_time)
 		{
 			print_msg(phil, DEATH);
-			sem_wait(phil -> sim_end);
-			sem_post(phil -> write);
-			break ;
+			while (i < phil -> quant)
+			{
+				sem_post(phil -> ready_to_die);
+				i += 1;
+			}
 		}
+		usleep(100);
 	}
 	return (0);
 }
@@ -72,6 +71,7 @@ static void	std_routine(t_philosopher *phil)
 
 	time = phil -> time;
 	gettimeofday(&(phil -> last_bite), 0);
+	usleep(100);
 	pthread_create(&tid, 0, watcher_routine, (void *)phil);
 	pthread_detach(tid);
 	if (phil->id % 2 != 0)

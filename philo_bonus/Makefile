@@ -6,7 +6,7 @@
 #    By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/11 22:03:20 by ensebast          #+#    #+#              #
-#    Updated: 2022/06/30 16:16:15 by ensebast         ###   ########.br        #
+#    Updated: 2022/07/01 01:47:58 by ensebast         ###   ########.br        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,9 @@ CC := clang
 
 LIB := -lpthread
 
-FILES := main.c action.c sim.c init.c alloc_util.c\
-		 check_num.c free_util.c util.c\
-		 wait_phil.c kill_phil.c
+FILES := main_bonus.c action_bonus.c sim_bonus.c init_bonus.c alloc_util_bonus.c\
+		 check_num_bonus.c free_util_bonus.c util_bonus.c\
+		 termination_util_bonus.c
 		 
 OBJ := $(addprefix ./obj/, $(FILES:c=o))
 

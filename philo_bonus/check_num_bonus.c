@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_num.c                                        :+:      :+:    :+:   */
+/*   check_num_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:50:31 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/22 13:09:49 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 01:49:45 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "philosopher_bonus.h"
 
 int	check_argv_is_number(char **str)
 {

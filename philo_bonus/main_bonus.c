@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:46:26 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/30 22:30:17 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 01:49:35 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "philosopher_bonus.h"
 
 static void	print_usage(void)
 {
@@ -50,8 +50,7 @@ int	main(int argc, char *argv[])
 	if (table.quant > 0)
 	{
 		start_routine(&table, &glob_time);
-		wait_phil(&table);
-		terminate_all_phil(&table);
+		wait_and_kill(&table);
 	}
 	free_up(&table);
 	return (0);
