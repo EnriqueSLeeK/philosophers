@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 22:30:08 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/26 15:04:05 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/30 23:35:58 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	start_routine(t_table *table, pthread_t *tid, t_time *glob_time)
 
 static int	check_bites(t_table *table)
 {
-	int				i;
+	int	i;
 
 	i = 0;
 	while (table -> sim_end == 0 && i < table -> quant)
@@ -60,9 +60,10 @@ static void	*eating_count_routine(void *data)
 	{
 		if (check_bites(table))
 			break ;
-		usleep(300);
 	}
+	pthread_mutex_lock(&(table -> write));
 	table -> sim_end = 1;
+	pthread_mutex_unlock(&(table -> write));
 	return (0);
 }
 
@@ -86,11 +87,9 @@ static void	*watcher_routine(void *data)
 			print_msg(phil, DEATH);
 			*(phil -> sim_end) = 1;
 			pthread_mutex_unlock(phil -> write);
-			break ;
 		}
 		pthread_mutex_unlock(&(phil -> eating));
 	}
-	pthread_mutex_unlock(&(phil -> eating));
 	return (0);
 }
 

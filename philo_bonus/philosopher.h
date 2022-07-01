@@ -6,24 +6,34 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/26 00:39:16 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/30 23:01:32 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
 
+# include <semaphore.h>
 # include <sys/time.h>
+# include <sys/wait.h>
 # include <pthread.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <fcntl.h>
 
 # define DEATH "is dead"
 # define EATING	"is eating"
 # define THINKING "is thinking"
 # define SLEEPY "is sleeping"
 # define FORK "has taken a fork"
+
+# define S_WRITE "write"
+# define S_FORK "fork"
+# define S_END "end"
+# define S_SATISFACTION "satiation"
+
+# define S_FLAG 0777
 
 typedef struct timeval	t_time;
 
@@ -38,14 +48,15 @@ typedef struct s_time_inf
 //The one who shall partake this feast
 typedef struct s_philosopher
 {
-	pthread_t		tid;
+	pid_t			pid;
 	int				id;
 	int				bites;
-	pthread_mutex_t	eating;
-	pthread_mutex_t	*write;
-	int				*sim_end;
-	pthread_mutex_t	*right;
-	pthread_mutex_t	*left;
+	int				quant;
+	long int		satiation;
+	sem_t			*write;
+	sem_t			*forks;
+	sem_t			*sim_end;
+	sem_t			*satisfaction;
 	t_time			last_bite;
 	t_time			*glob_time;
 	t_time_inf		*time;
@@ -55,9 +66,10 @@ typedef struct s_philosopher
 typedef struct s_table
 {
 	t_philosopher	**phi;
-	pthread_mutex_t	*fork_list;
-	int				sim_end;
-	pthread_mutex_t	write;
+	sem_t			*fork_list;
+	sem_t			*write;
+	sem_t			*sim_end;
+	sem_t			*satisfaction;
 	long int		quant;
 	long int		satiation;
 }	t_table;
@@ -70,12 +82,11 @@ int				init_phil(t_philosopher **phi, t_table *table,
 int				init_table(char **argv, int argc,
 					t_table *table);
 
-int				init_mutex(t_table *table);
+int				init_sem(t_table *table);
 int				init_time(char **argv, t_time_inf *time);
 
 // Simulation
-void			start_routine(t_table *table, pthread_t *tid,
-					t_time *glob_time);
+void			start_routine(t_table *table, t_time *glob_time);
 
 //Action
 void			release_fork(t_philosopher *phil);
@@ -87,7 +98,11 @@ int				sleeping(t_philosopher *phil, t_time_inf *time, char *msg);
 // Printing msg
 int				print_msg(t_philosopher *phil, char *msg);
 
+// Terminate all phil
+void			terminate_all_phil(t_table *table);
+
 // Memory
+void			clean_child(t_table *table);
 void			free_bmatrix(void **data, long int n);
 void			free_up(t_table *table);
 
@@ -98,11 +113,9 @@ int				check_argv_is_number(char **str);
 void			**alloc_matrix(long int quant,
 					long int ptr_size, long int size);
 
-void			wait_phil(t_table *table, pthread_t *tid);
+void			wait_phil(t_table *table);
 long int		str_to_int(char *str_digit, long int num);
 long int		get_mstime(t_time *old, t_time *new);
 int				index_adjust(int index, int quant);
 void			msleep(long int time);
-
-void			fork_set(int quant, int *list);
 #endif

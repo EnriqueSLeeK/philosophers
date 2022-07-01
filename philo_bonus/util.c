@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/26 00:38:02 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/30 22:49:24 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,9 @@ int	print_msg(t_philosopher *phil, char *msg)
 	t_time	time_now;
 
 	gettimeofday(&time_now, 0);
-	pthread_mutex_lock(phil->write);
-	if (*(phil -> sim_end))
+	sem_wait(phil->write);
+	if ((phil -> sim_end)->__align != 1)
 	{
-		pthread_mutex_unlock(phil->write);
 		return (1);
 	}
 	printf("%ld %d %s\n", get_mstime(phil->glob_time, &time_now),

@@ -6,105 +6,73 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 22:30:08 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/26 15:04:05 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/30 23:09:28 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-static void	*std_routine(void *data);
+static void	std_routine(t_philosopher *data);
 static void	*watcher_routine(void *data);
 
-static int	check_bites(t_table *table);
-static void	*eating_count_routine(void *data);
-
 // Thread id
-void	start_routine(t_table *table, pthread_t *tid, t_time *glob_time)
+void	start_routine(t_table *table, t_time *glob_time)
 {
-	int			n;
+	int	n;
 
-	if (table -> satiation > -1)
-		pthread_create(tid, 0, eating_count_routine, (void *)(table));
 	n = 0;
 	gettimeofday(glob_time, 0);
 	while (n < table -> quant)
 	{
 		(table -> phi[n])->glob_time = glob_time;
-		pthread_create(&((table -> phi[n])->tid), 0,
-			std_routine, (void *)(table -> phi[n]));
+		(table -> phi[n])->pid = fork();
+		if ((table -> phi[n])->pid == 0)
+		{
+			std_routine(table -> phi[n]);
+			clean_child(table);
+			exit(1);
+		}
 		n += 1;
 	}
-}
-
-static int	check_bites(t_table *table)
-{
-	int				i;
-
-	i = 0;
-	while (table -> sim_end == 0 && i < table -> quant)
-	{
-		if ((table -> phi[i])->bites < table -> satiation)
-			return (0);
-		i += 1;
-	}
-	return (1);
-}
-
-// Check how many times a philoshopher ate
-static void	*eating_count_routine(void *data)
-{
-	t_table	*table;
-
-	table = (t_table *)data;
-	while (1)
-	{
-		if (check_bites(table))
-			break ;
-		usleep(300);
-	}
-	table -> sim_end = 1;
-	return (0);
 }
 
 // Check if the philoshopher is dead
 static void	*watcher_routine(void *data)
 {
-	int				flag;
 	t_philosopher	*phil;
 	t_time			time_now;
 
-	flag = 1;
 	phil = (t_philosopher *)data;
-	while (flag)
+	while (1)
 	{
 		gettimeofday(&time_now, 0);
-		pthread_mutex_lock(&(phil -> eating));
-		if (get_mstime(&(phil -> last_bite), &time_now)
-			>= (phil->time)->death_time)
+		if ((phil -> satisfaction)->__align == phil -> quant)
 		{
-			flag = 0;
-			print_msg(phil, DEATH);
-			*(phil -> sim_end) = 1;
-			pthread_mutex_unlock(phil -> write);
+			sem_wait(phil -> sim_end);
 			break ;
 		}
-		pthread_mutex_unlock(&(phil -> eating));
+		if ((phil -> sim_end)->__align == 1
+			&& get_mstime(&(phil -> last_bite), &time_now)
+			>= (phil->time)->death_time)
+		{
+			print_msg(phil, DEATH);
+			sem_wait(phil -> sim_end);
+			sem_post(phil -> write);
+			break ;
+		}
 	}
-	pthread_mutex_unlock(&(phil -> eating));
 	return (0);
 }
 
 // Standart routine for each philosopher: eat -> sleep -> think -> loop
-static void	*std_routine(void *data)
+static void	std_routine(t_philosopher *phil)
 {
 	pthread_t		tid;
-	t_philosopher	*phil;
 	t_time_inf		*time;
 
-	phil = (t_philosopher *)data;
 	time = phil -> time;
 	gettimeofday(&(phil -> last_bite), 0);
-	pthread_create(&tid, 0, watcher_routine, data);
+	pthread_create(&tid, 0, watcher_routine, (void *)phil);
 	pthread_detach(tid);
 	if (phil->id % 2 != 0)
 		msleep(time -> eating_time);
@@ -113,5 +81,5 @@ static void	*std_routine(void *data)
 		&& thinking(phil, THINKING))
 		continue ;
 	release_fork(phil);
-	return (0);
+	return ;
 }

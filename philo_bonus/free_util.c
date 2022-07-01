@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 19:20:21 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/26 00:38:14 by ensebast         ###   ########.br       */
+/*   Updated: 2022/06/30 22:41:33 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,16 @@ static void	check_and_free_matrix(void **data, long int n)
 		free_bmatrix(data, n);
 }
 
-static void	pthread_mdestroy(t_table *table)
+static void	sem_destroyer(t_table *table)
 {
-	int	i;
-
-	i = 0;
-	while (i < table -> quant)
-	{
-		pthread_mutex_destroy(&(table -> fork_list[i]));
-		i += 1;
-	}
-	pthread_mutex_destroy(&(table -> write));
+	sem_close(table -> fork_list);
+	sem_close(table -> sim_end);
+	sem_close(table -> satisfaction);
+	sem_close(table -> write);
+	sem_unlink(S_SATISFACTION);
+	sem_unlink(S_WRITE);
+	sem_unlink(S_FORK);
+	sem_unlink(S_END);
 }
 
 void	free_bmatrix(void **matrix, long int n)
@@ -44,9 +43,17 @@ void	free_bmatrix(void **matrix, long int n)
 	free(matrix);
 }
 
+void	clean_child(t_table *table)
+{
+	sem_close(table -> fork_list);
+	sem_close(table -> sim_end);
+	sem_close(table -> satisfaction);
+	sem_close(table -> write);
+	check_and_free_matrix((void **)(table -> phi), table -> quant);
+}
+
 void	free_up(t_table *table)
 {
-	pthread_mdestroy(table);
-	free(table -> fork_list);
+	sem_destroyer(table);
 	check_and_free_matrix((void **)(table -> phi), table -> quant);
 }
