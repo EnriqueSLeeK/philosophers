@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 23:32:57 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/02 12:38:51 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/02 15:26:47 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	eat(t_philosopher *phil, t_time_inf *time)
 	if (phil -> right == phil -> left)
 	{
 		pthread_mutex_unlock(&(phil -> eating));
-		msleep(time -> death_time + 10);
+		msleep(time -> death_time + 25);
 		return (0);
 	}
 	gettimeofday(&(phil -> last_bite), 0);
