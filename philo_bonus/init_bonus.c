@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 18:36:58 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/02 20:10:30 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/02 20:25:33 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	init_phil(t_philosopher **phil, t_table *table, t_time_inf *time)
 		phil[i]->eat = 0;
 		phil[i]->quant = table -> quant;
 		phil[i]->satiation = table -> satiation;
+		phil[i]->available = table -> available;
 		phil[i]->write = table -> write;
 		phil[i]->forks = table -> forks;
 		phil[i]->ready_to_die = table -> ready_to_die;
@@ -61,7 +62,7 @@ int	init_sem(t_table *table)
 	sem_unlink(S_TERM);
 	sem_unlink(S_FORK);
 	sem_unlink(S_WRITE);
-	table -> available = sem_open(S_TERM, O_CREAT, S_FLAG, n);
+	table -> available = sem_open(S_AV, O_CREAT, S_FLAG, n);
 	table -> ready_to_die = sem_open(S_TERM, O_CREAT, S_FLAG, 0);
 	table -> write = sem_open(S_WRITE, O_CREAT, S_FLAG, 1);
 	table -> forks = sem_open(S_FORK, O_CREAT, S_FLAG, table -> quant);
