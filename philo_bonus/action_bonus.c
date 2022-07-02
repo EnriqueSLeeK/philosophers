@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 23:32:57 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/02 20:26:20 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/02 20:58:47 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,6 @@ int	thinking(t_philosopher *phil, char *msg)
 	if (print_msg(phil, msg))
 		return (0);
 	sem_post(phil -> write);
+	usleep(500);
 	return (1);
 }
