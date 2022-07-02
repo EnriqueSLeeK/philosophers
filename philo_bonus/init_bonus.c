@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 18:36:58 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/01 19:23:25 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/02 20:10:30 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,21 @@ int	init_phil(t_philosopher **phil, t_table *table, t_time_inf *time)
 
 int	init_sem(t_table *table)
 {
+	int	n;
+
+	n = table -> quant - 2;
+	if (n <= 0)
+		n = 1;
+	sem_unlink(S_AV);
 	sem_unlink(S_TERM);
 	sem_unlink(S_FORK);
 	sem_unlink(S_WRITE);
+	table -> available = sem_open(S_TERM, O_CREAT, S_FLAG, n);
 	table -> ready_to_die = sem_open(S_TERM, O_CREAT, S_FLAG, 0);
 	table -> write = sem_open(S_WRITE, O_CREAT, S_FLAG, 1);
 	table -> forks = sem_open(S_FORK, O_CREAT, S_FLAG, table -> quant);
-	if (table -> ready_to_die == SEM_FAILED
+	if (table -> available == SEM_FAILED
+		|| table -> ready_to_die == SEM_FAILED
 		|| table -> write == SEM_FAILED
 		|| table -> forks == SEM_FAILED)
 		return (0);

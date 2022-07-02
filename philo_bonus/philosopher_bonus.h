@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/01 19:24:17 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/02 20:06:12 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define SLEEPY "is sleeping"
 # define FORK "has taken a fork"
 
+# define S_AV "available"
 # define S_TERM "termination"
 # define S_WRITE "write"
 # define S_FORK "fork"
@@ -53,6 +54,7 @@ typedef struct s_philosopher
 	int				bites;
 	int				quant;
 	long int		satiation;
+	sem_t			*available;
 	sem_t			*write;
 	sem_t			*forks;
 	sem_t			*ready_to_die;
@@ -67,6 +69,7 @@ typedef struct s_table
 	t_philosopher	**phi;
 	sem_t			*write;
 	sem_t			*forks;
+	sem_t			*available;
 	sem_t			*ready_to_die;
 	long int		quant;
 	long int		satiation;

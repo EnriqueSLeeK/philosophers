@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 19:20:21 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/01 01:49:42 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/02 20:07:50 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	check_and_free_matrix(void **data, long int n)
 static void	sem_destroyer(t_table *table)
 {
 	sem_close(table -> ready_to_die);
+	sem_close(table -> available);
 	sem_close(table -> forks);
 	sem_close(table -> write);
 }
