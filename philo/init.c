@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 18:36:58 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/26 00:37:34 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 17:43:05 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	init_phil(t_philosopher **phil, t_table *table, t_time_inf *time)
 		phil[i]->sim_end = &(table -> sim_end);
 		phil[i]->right = &(table -> fork_list[i]);
 		phil[i]->left = &(table -> fork_list[
-				index_adjust(i + 1, table -> quant)]);
+				(i + 1) % table -> quant]);
 		phil[i]->time = time;
 		pthread_mutex_init(&((phil[i])->eating), 0);
 		i += 1;
@@ -80,7 +80,7 @@ int	init_table(char **argv, int argc, t_table *table)
 	table -> phi = (t_philosopher **)alloc_matrix(table -> quant,
 			sizeof(t_philosopher *),
 			sizeof(t_philosopher));
-	if (!(table -> phi))
+	if (!(table -> phi && table -> fork_list))
 	{
 		free_up(table);
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 18:36:58 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/01 01:49:39 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 19:23:25 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,9 @@ int	init_table(char **argv, int argc, t_table *table)
 {
 	if (!(convert_argv(&(table -> quant), argv[0])))
 		return (0);
+	table -> satiation = -2;
 	if (argc == 6)
 		convert_argv(&(table -> satiation), argv[4]);
-	else
-		table -> satiation = -2;
 	table -> phi = (t_philosopher **)alloc_matrix(table -> quant,
 			sizeof(t_philosopher *),
 			sizeof(t_philosopher));

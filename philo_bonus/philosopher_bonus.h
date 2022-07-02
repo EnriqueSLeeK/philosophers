@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/01 02:06:52 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 19:24:17 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,5 @@ void			**alloc_matrix(long int quant,
 
 long int		str_to_int(char *str_digit, long int num);
 long int		get_delta(t_time *old, t_time *new);
-int				index_adjust(int index, int quant);
 void			msleep(long int time);
 #endif

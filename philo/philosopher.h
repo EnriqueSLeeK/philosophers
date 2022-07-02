@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/26 00:39:16 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 17:53:23 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ void			**alloc_matrix(long int quant,
 void			wait_phil(t_table *table, pthread_t *tid);
 long int		str_to_int(char *str_digit, long int num);
 long int		get_mstime(t_time *old, t_time *new);
-int				index_adjust(int index, int quant);
 void			msleep(long int time);
 
 void			fork_set(int quant, int *list);

@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 23:32:57 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/01 15:07:50 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/02 12:38:51 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ int	eat(t_philosopher *phil, t_time_inf *time)
 		msleep(time -> death_time + 10);
 		return (0);
 	}
+	gettimeofday(&(phil -> last_bite), 0);
 	if (print_msg(phil, EATING))
 		return (0);
 	pthread_mutex_unlock(phil -> write);
 	phil -> bites += 1;
 	msleep(time -> eating_time);
-	gettimeofday(&(phil -> last_bite), 0);
 	release_fork(phil);
 	pthread_mutex_unlock(&(phil -> eating));
 	return (1);

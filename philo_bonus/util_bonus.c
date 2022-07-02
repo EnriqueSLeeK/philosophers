@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/01 01:49:06 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/02 12:51:03 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	print_msg(t_philosopher *phil, char *msg)
 {
 	t_time	time_now;
 
-	gettimeofday(&time_now, 0);
 	sem_wait(phil->write);
+	gettimeofday(&time_now, 0);
 	printf("%ld %d %s\n", get_delta(phil->glob_time, &time_now),
 		phil->id + 1, msg);
 	return (0);
@@ -42,9 +42,4 @@ long int	str_to_int(char *str_digit, long int num)
 void	msleep(long int time)
 {
 	usleep(time * 1000);
-}
-
-int	index_adjust(int index, int quant)
-{
-	return (index % quant);
 }

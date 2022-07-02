@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:50:31 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/22 13:09:49 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 17:48:03 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ int	check_argv_is_number(char **str)
 		while (str[i][k])
 		{
 			if (str[i][k] < '0' || str[i][k] > '9')
-				return (i);
+				return (1);
 			k += 1;
 		}
 		i += 1;
 	}
-	return (-1);
+	return (0);
 }

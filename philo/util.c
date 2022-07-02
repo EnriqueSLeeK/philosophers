@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/01 15:03:29 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 17:53:07 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,4 @@ long int	str_to_int(char *str_digit, long int num)
 void	msleep(long int time)
 {
 	usleep(time * 1000);
-}
-
-int	index_adjust(int index, int quant)
-{
-	return (index % quant);
 }

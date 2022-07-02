@@ -6,17 +6,11 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:46:26 by ensebast          #+#    #+#             */
-/*   Updated: 2022/06/26 00:14:33 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/01 18:02:16 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
-
-static void	print_usage(void)
-{
-	printf("Usage: ./philosopher <n_phil> <time_death> \
-<time_eat> <time_sleep> <n_times_to_eat>\n");
-}
 
 // 1 for failure | 0 for success
 static int	initialize(int argc, char **argv, t_table *table, t_time_inf *time)
@@ -29,7 +23,6 @@ static int	initialize(int argc, char **argv, t_table *table, t_time_inf *time)
 	return (1);
 }
 
-//	fork_set(table.quant, table.fork_list);
 int	main(int argc, char *argv[])
 {
 	t_time_inf	time;
@@ -38,9 +31,10 @@ int	main(int argc, char *argv[])
 	t_time		glob_time;
 
 	if ((argc < 5 || argc > 6)
-		|| check_argv_is_number(argv + 1) != -1)
+		|| check_argv_is_number(argv + 1))
 	{
-		print_usage();
+		printf("Usage: ./philosopher <n_phil> <time_death> \
+<time_eat> <time_sleep> <n_times_to_eat>\n");
 		return (1);
 	}
 	if (initialize(argc, argv, &table, &time))
