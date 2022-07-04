@@ -6,13 +6,13 @@
 #    By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/11 22:03:20 by ensebast          #+#    #+#              #
-#    Updated: 2022/07/02 13:09:38 by ensebast         ###   ########.br        #
+#    Updated: 2022/07/04 18:15:42 by ensebast         ###   ########.br        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := philo_bonus
 
-CFLAGS := -g -Werror -Wextra -Wall
+CFLAGS := -Werror -Wextra -Wall
 CC := clang
 
 LIB := -lpthread

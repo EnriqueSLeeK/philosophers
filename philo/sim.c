@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 22:30:08 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/02 12:38:37 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/04 18:48:16 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,15 @@ static int	check_bites(t_table *table);
 static void	*eating_count_routine(void *data);
 
 // Thread id
-void	start_routine(t_table *table, pthread_t *tid, t_time *glob_time)
+void	start_routine(t_table *table, pthread_t *tid)
 {
 	int			n;
 
 	if (table -> satiation > -1)
 		pthread_create(tid, 0, eating_count_routine, (void *)(table));
 	n = 0;
-	gettimeofday(glob_time, 0);
 	while (n < table -> quant)
 	{
-		(table -> phi[n])->glob_time = glob_time;
 		pthread_create(&((table -> phi[n])->tid), 0,
 			std_routine, (void *)(table -> phi[n]));
 		n += 1;
@@ -71,7 +69,6 @@ static void	*eating_count_routine(void *data)
 static void	*watcher_routine(void *data)
 {
 	t_philosopher	*phil;
-	t_time			time_now;
 
 	phil = (t_philosopher *)data;
 	while (1)
@@ -79,9 +76,7 @@ static void	*watcher_routine(void *data)
 		if (*(phil -> sim_end))
 			break ;
 		pthread_mutex_lock(&(phil -> eating));
-		gettimeofday(&time_now, 0);
-		if (get_mstime(&(phil -> last_bite), &time_now)
-			>= (phil->time)->death_time)
+		if ((get_mstime() - phil -> last_bite) >= (phil->time)->death_time)
 		{
 			print_msg(phil, DEATH);
 			*(phil -> sim_end) = 1;
@@ -94,7 +89,7 @@ static void	*watcher_routine(void *data)
 	return (0);
 }
 
-// Standart routine for each philosopher: eat -> sleep -> think -> loop
+// Standard routine for each philosopher: eat -> sleep -> think -> loop
 static void	*std_routine(void *data)
 {
 	pthread_t		tid;
@@ -103,9 +98,9 @@ static void	*std_routine(void *data)
 
 	phil = (t_philosopher *)data;
 	time = phil -> time;
-	gettimeofday(&(phil -> last_bite), 0);
+	phil -> last_bite = get_mstime();
+	phil -> glob_time = get_mstime();
 	pthread_create(&tid, 0, watcher_routine, data);
-	pthread_detach(tid);
 	if (phil->id % 2 != 0)
 		msleep(time -> eating_time);
 	while (take_fork(phil) && eat(phil, time)
@@ -113,5 +108,6 @@ static void	*std_routine(void *data)
 		&& thinking(phil, THINKING))
 		continue ;
 	release_fork(phil);
+	pthread_join(tid, 0);
 	return (0);
 }

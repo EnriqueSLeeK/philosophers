@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:46:26 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/01 19:22:56 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/04 18:31:41 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	main(int argc, char *argv[])
 {
 	t_time_inf	time;
 	t_table		table;
-	t_time		glob_time;
 
 	if ((argc < 5 || argc > 6)
 		|| check_argv_is_number(argv + 1))
@@ -49,7 +48,7 @@ int	main(int argc, char *argv[])
 	}
 	if (table.quant > 0)
 	{
-		start_routine(&table, &glob_time);
+		start_routine(&table);
 		wait_and_kill(&table);
 	}
 	free_up(&table);

@@ -6,30 +6,29 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/01 17:53:07 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/04 18:48:45 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-long int	get_mstime(t_time *old, t_time *new)
+long int	get_mstime(void)
 {
-	return ((new->tv_sec - old->tv_sec) * 1000
-		+ (new -> tv_usec - old->tv_usec) / 1000);
+	t_time	time;
+	
+	gettimeofday(&time, 0);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
 int	print_msg(t_philosopher *phil, char *msg)
 {
-	t_time	time_now;
-
 	pthread_mutex_lock(phil->write);
 	if (*(phil -> sim_end))
 	{
 		pthread_mutex_unlock(phil->write);
 		return (1);
 	}
-	gettimeofday(&time_now, 0);
-	printf("%ld %d %s\n", get_mstime(phil->glob_time, &time_now),
+	printf("%ld %d %s\n", get_mstime() - phil->glob_time,
 		phil->id + 1, msg);
 	return (0);
 }
@@ -46,5 +45,9 @@ long int	str_to_int(char *str_digit, long int num)
 
 void	msleep(long int time)
 {
-	usleep(time * 1000);
+	long int	ref;
+
+	ref = get_mstime();
+	while (get_mstime() - ref < time)
+		usleep(100);
 }

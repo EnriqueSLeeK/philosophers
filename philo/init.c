@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 18:36:58 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/01 17:43:05 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/04 19:00:13 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	init_phil(t_philosopher **phil, t_table *table, t_time_inf *time)
 		phil[i]->id = i;
 		phil[i]->bites = 0;
 		phil[i]->write = &(table -> write);
+		phil[i]->glob_time = 0;
+		phil[i]->last_bite = 0;
 		phil[i]->sim_end = &(table -> sim_end);
 		phil[i]->right = &(table -> fork_list[i]);
 		phil[i]->left = &(table -> fork_list[

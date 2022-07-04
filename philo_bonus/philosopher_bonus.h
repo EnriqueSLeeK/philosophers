@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/02 20:17:44 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/04 18:31:08 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ typedef struct s_philosopher
 	sem_t			*write;
 	sem_t			*forks;
 	sem_t			*ready_to_die;
-	t_time			last_bite;
-	t_time			*glob_time;
+	long int		last_bite;
+	long int		glob_time;
 	t_time_inf		*time;
 }	t_philosopher;
 
@@ -87,7 +87,7 @@ int				init_sem(t_table *table);
 int				init_time(char **argv, t_time_inf *time);
 
 // Simulation
-void			start_routine(t_table *table, t_time *glob_time);
+void			start_routine(t_table *table);
 
 //Action
 void			release_fork(t_philosopher *phil);
@@ -114,7 +114,8 @@ int				check_argv_is_number(char **str);
 void			**alloc_matrix(long int quant,
 					long int ptr_size, long int size);
 
+//long int		get_delta(t_time *old, t_time *new);
 long int		str_to_int(char *str_digit, long int num);
-long int		get_delta(t_time *old, t_time *new);
+long int		get_mstime(void);
 void			msleep(long int time);
 #endif

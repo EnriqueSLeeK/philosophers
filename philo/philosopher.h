@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/01 17:53:23 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/04 18:42:47 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ typedef struct s_philosopher
 	pthread_t		tid;
 	int				id;
 	int				bites;
+	int				*sim_end;
+	long int		last_bite;
+	long int		glob_time;
 	pthread_mutex_t	eating;
 	pthread_mutex_t	*write;
-	int				*sim_end;
 	pthread_mutex_t	*right;
 	pthread_mutex_t	*left;
-	t_time			last_bite;
-	t_time			*glob_time;
 	t_time_inf		*time;
 }	t_philosopher;
 
@@ -56,8 +56,8 @@ typedef struct s_table
 {
 	t_philosopher	**phi;
 	pthread_mutex_t	*fork_list;
-	int				sim_end;
 	pthread_mutex_t	write;
+	int				sim_end;
 	long int		quant;
 	long int		satiation;
 }	t_table;
@@ -74,8 +74,7 @@ int				init_mutex(t_table *table);
 int				init_time(char **argv, t_time_inf *time);
 
 // Simulation
-void			start_routine(t_table *table, pthread_t *tid,
-					t_time *glob_time);
+void			start_routine(t_table *table, pthread_t *tid);
 
 //Action
 void			release_fork(t_philosopher *phil);
@@ -100,7 +99,7 @@ void			**alloc_matrix(long int quant,
 
 void			wait_phil(t_table *table, pthread_t *tid);
 long int		str_to_int(char *str_digit, long int num);
-long int		get_mstime(t_time *old, t_time *new);
+long int		get_mstime(void);
 void			msleep(long int time);
 
 void			fork_set(int quant, int *list);
