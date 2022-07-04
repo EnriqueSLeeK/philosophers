@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 22:30:08 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/04 18:30:47 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/04 20:06:06 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	*watcher_routine(void *data)
 	return (0);
 }
 
-// Standart routine for each philosopher: eat -> sleep -> think -> loop
+// Standard routine for each philosopher: eat -> sleep -> think -> loop
 static void	std_routine(t_philosopher *phil)
 {
 	pthread_t		tid;
