@@ -6,7 +6,7 @@
 #    By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/11 22:03:20 by ensebast          #+#    #+#              #
-#    Updated: 2022/07/04 18:32:37 by ensebast         ###   ########.br        #
+#    Updated: 2022/07/05 14:58:02 by ensebast         ###   ########.br        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ LIB := -lpthread
 
 FILES := main.c action.c sim.c init.c alloc_util.c\
 		 check_num.c free_util.c util.c\
-		 wait_phil.c
+		 wait_phil.c critical_reg.c
 		 
 OBJ := $(addprefix ./obj/, $(FILES:c=o))
 

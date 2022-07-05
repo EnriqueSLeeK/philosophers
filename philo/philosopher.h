@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/04 18:42:47 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/05 15:01:39 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ int				init_mutex(t_table *table);
 int				init_time(char **argv, t_time_inf *time);
 
 // Simulation
-void			start_routine(t_table *table, pthread_t *tid);
+void			start_routine(t_table *table, pthread_t *tid,
+					long int *glob_time);
 
 //Action
 void			release_fork(t_philosopher *phil);
@@ -93,6 +94,12 @@ void			free_up(t_table *table);
 // Input checking
 int				check_argv_is_number(char **str);
 
+// Critical reg
+int				get_simulation_status(t_philosopher *phil);
+void			simulation_end(t_philosopher *phil);
+void			set_last_bite(t_philosopher *phil);
+long int		get_last_bite(t_philosopher *phil);
+
 // Util
 void			**alloc_matrix(long int quant,
 					long int ptr_size, long int size);
@@ -100,7 +107,7 @@ void			**alloc_matrix(long int quant,
 void			wait_phil(t_table *table, pthread_t *tid);
 long int		str_to_int(char *str_digit, long int num);
 long int		get_mstime(void);
-void			msleep(long int time);
+void			msleep_and_check(t_philosopher *phil, long int time);
 
 void			fork_set(int quant, int *list);
 #endif
