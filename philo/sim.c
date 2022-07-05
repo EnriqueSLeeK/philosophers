@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 22:30:08 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/04 18:48:16 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/05 00:25:10 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ static void	*watcher_routine(void *data)
 	phil = (t_philosopher *)data;
 	while (1)
 	{
+		pthread_mutex_lock(&(phil -> eating));
 		if (*(phil -> sim_end))
 			break ;
-		pthread_mutex_lock(&(phil -> eating));
-		if ((get_mstime() - phil -> last_bite) >= (phil->time)->death_time)
+		if ((get_mstime() - phil->last_bite) >= (phil->time)->death_time)
 		{
 			print_msg(phil, DEATH);
 			*(phil -> sim_end) = 1;

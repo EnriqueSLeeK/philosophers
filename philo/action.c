@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 23:32:57 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/04 18:42:29 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/04 20:41:14 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,21 @@ int	take_fork(t_philosopher *phil)
 
 int	eat(t_philosopher *phil, t_time_inf *time)
 {
-	pthread_mutex_lock(&(phil -> eating));
 	if (phil -> right == phil -> left)
 	{
 		pthread_mutex_unlock(&(phil -> eating));
 		msleep(time -> death_time + 25);
 		return (0);
 	}
+	pthread_mutex_lock(&(phil -> eating));
 	phil -> last_bite = get_mstime();
+	phil -> bites += 1;
+	pthread_mutex_unlock(&(phil -> eating));
 	if (print_msg(phil, EATING))
 		return (0);
 	pthread_mutex_unlock(phil -> write);
-	phil -> bites += 1;
 	msleep(time -> eating_time);
 	release_fork(phil);
-	pthread_mutex_unlock(&(phil -> eating));
 	return (1);
 }
 
