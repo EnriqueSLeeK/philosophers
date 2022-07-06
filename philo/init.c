@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 18:36:58 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/04 19:00:13 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 16:24:03 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	init_phil(t_philosopher **phil, t_table *table, t_time_inf *time)
 		phil[i]->id = i;
 		phil[i]->bites = 0;
 		phil[i]->write = &(table -> write);
+		phil[i]->satisfaction = &(table -> satisfaction);
+		phil[i]->satiation = table -> satiation;
 		phil[i]->glob_time = 0;
 		phil[i]->last_bite = 0;
 		phil[i]->sim_end = &(table -> sim_end);
@@ -78,6 +80,7 @@ int	init_table(char **argv, int argc, t_table *table)
 	else
 		table -> satiation = -2;
 	table -> sim_end = 0;
+	table -> satisfaction = 0;
 	table -> fork_list = malloc(table -> quant * sizeof(pthread_mutex_t));
 	table -> phi = (t_philosopher **)alloc_matrix(table -> quant,
 			sizeof(t_philosopher *),

@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:46:26 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/05 15:29:08 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 16:26:20 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	main(int argc, char *argv[])
 {
 	t_time_inf	time;
 	t_table		table;
-	pthread_t	tid_eat;
 	long int	glob_time;
 
 	if ((argc < 5 || argc > 6)
@@ -43,8 +42,8 @@ int	main(int argc, char *argv[])
 		return (1);
 	}
 	if (table.quant > 0)
-		start_routine(&table, &tid_eat, &glob_time);
-	wait_phil(&table, &tid_eat);
+		start_routine(&table, &glob_time);
+	//wait_phil(&table);
 	free_up(&table);
 	return (0);
 }

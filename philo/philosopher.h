@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/05 18:39:14 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 16:21:13 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_philosopher
 	int				*sim_end;
 	long int		last_bite;
 	long int		glob_time;
+	long int		*satisfaction;
+	long int		satiation;
 	pthread_mutex_t	eating;
 	pthread_mutex_t	*write;
 	pthread_mutex_t	*right;
@@ -60,6 +62,7 @@ typedef struct s_table
 	int				sim_end;
 	long int		quant;
 	long int		satiation;
+	long int		satisfaction;
 }	t_table;
 
 // Initializer
@@ -74,15 +77,14 @@ int				init_mutex(t_table *table);
 int				init_time(char **argv, t_time_inf *time);
 
 // Simulation
-void			start_routine(t_table *table, pthread_t *tid,
-					long int *glob_time);
+void			start_routine(t_table *table, long int *glob_time);
 
 //Action
 void			release_fork(t_philosopher *phil);
 int				take_fork(t_philosopher *phil);
-int				thinking(t_philosopher *phil, char *msg);
-int				eat(t_philosopher *phil, t_time_inf *time);
-int				sleeping(t_philosopher *phil, t_time_inf *time, char *msg);
+int				sleeping(t_philosopher *phil);
+int				think(t_philosopher *phil);
+int				eat(t_philosopher *phil);
 
 // Printing msg
 int				print_msg(t_philosopher *phil, char *msg);
@@ -95,20 +97,25 @@ void			free_up(t_table *table);
 int				check_argv_is_number(char **str);
 
 // Critical reg
+// -> Getter
 int				get_simulation_status(t_philosopher *phil);
+long int		get_satisfaction(t_philosopher *phil);
+long int		get_last_bite(t_philosopher *phil);
 int				get_bite(t_philosopher *phil);
+
+// -> Setter
+void			update_satisfaction(t_philosopher *phil);
 void			simulation_end(t_philosopher *phil);
 void			set_last_bite(t_philosopher *phil);
-long int		get_last_bite(t_philosopher *phil);
 
 // Util
 void			**alloc_matrix(long int quant,
 					long int ptr_size, long int size);
 
-void			wait_phil(t_table *table, pthread_t *tid);
+void			wait_phil(t_table *table);
 long int		str_to_int(char *str_digit, long int num);
+void			msleep(long int time);
 long int		get_mstime(void);
-void			msleep_and_check(t_philosopher *phil, long int time);
 
 void			fork_set(int quant, int *list);
 #endif

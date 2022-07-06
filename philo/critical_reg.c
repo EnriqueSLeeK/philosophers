@@ -6,24 +6,24 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:43:16 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/05 21:40:34 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 16:19:57 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	set_last_bite(t_philosopher *phil)
+void	update_satisfaction(t_philosopher *phil)
 {
 	pthread_mutex_lock(&(phil -> eating));
-	phil -> last_bite = get_mstime();
-	phil -> bites += 1;
+	*(phil -> satisfaction) += 1;
 	pthread_mutex_unlock(&(phil -> eating));
 }
 
-void	simulation_end(t_philosopher *phil)
+void	set_last_bite(t_philosopher *phil)
 {
 	pthread_mutex_lock(&(phil -> eating));
-	*(phil -> sim_end) = 1;
+	phil -> bites += 1;
+	phil -> last_bite = get_mstime();
 	pthread_mutex_unlock(&(phil -> eating));
 }
 
@@ -37,7 +37,7 @@ long int	get_last_bite(t_philosopher *phil)
 	return (last_bite);
 }
 
-int		get_simulation_status(t_philosopher *phil)
+int	get_simulation_status(t_philosopher *phil)
 {
 	int	status;
 
@@ -45,6 +45,16 @@ int		get_simulation_status(t_philosopher *phil)
 	status = *(phil -> sim_end);
 	pthread_mutex_unlock(&(phil -> eating));
 	return (status);
+}
+
+long int	get_satisfaction(t_philosopher *phil)
+{
+	long int	satisfaction;
+
+	pthread_mutex_lock(&(phil -> eating));
+	satisfaction = *(phil -> satisfaction);
+	pthread_mutex_unlock(&(phil -> eating));
+	return (satisfaction);
 }
 
 int	get_bite(t_philosopher *phil)

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/15 23:32:57 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/05 14:54:28 by ensebast         ###   ########.br       */
+/*   Created: 2022/07/05 22:56:13 by ensebast          #+#    #+#             */
+/*   Updated: 2022/07/06 16:36:32 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,55 +14,50 @@
 
 int	take_fork(t_philosopher *phil)
 {
-	pthread_mutex_lock(phil -> left);
+	pthread_mutex_lock(phil->left);
 	if (print_msg(phil, FORK))
-		return (0);
-	pthread_mutex_unlock(phil -> write);
-	if (phil -> right == phil -> left)
-		return (-1);
-	pthread_mutex_lock(phil -> right);
+		return (1);
+	pthread_mutex_unlock(phil->write);
+	if (phil -> left == phil -> right)
+	{
+		msleep(phil->time->death_time + 1);
+		return (1);
+	}
+	pthread_mutex_lock(phil->right);
 	if (print_msg(phil, FORK))
-		return (0);
-	pthread_mutex_unlock(phil -> write);
-	return (1);
+		return (1);
+	pthread_mutex_unlock(phil->write);
+	return (0);
 }
 
-int	eat(t_philosopher *phil, t_time_inf *time)
+int eat(t_philosopher *phil)
 {
-	if (phil -> right == phil -> left)
-	{
-		pthread_mutex_unlock(&(phil -> eating));
-		msleep_and_check(phil, time -> death_time + 25);
-		return (0);
-	}
 	set_last_bite(phil);
 	if (print_msg(phil, EATING))
-		return (0);
+		return (1);
 	pthread_mutex_unlock(phil -> write);
-	msleep_and_check(phil, time -> eating_time);
+	if (phil -> bites == phil -> satiation)
+		update_satisfaction(phil);
+	msleep(phil->time->eating_time);
 	release_fork(phil);
-	return (1);
+	return (0);
+}
+
+int sleeping(t_philosopher *phil)
+{
+	msleep(phil->time->sleep_time);
+	return (0);
+}
+
+int think(t_philosopher *phil)
+{
+	print_msg(phil, THINKING);
+	pthread_mutex_unlock(phil->write);
+	return (0);
 }
 
 void	release_fork(t_philosopher *phil)
 {
-	pthread_mutex_unlock(phil -> left);
-	pthread_mutex_unlock(phil -> right);
-}
-
-int	sleeping(t_philosopher *phil, t_time_inf *time, char *msg)
-{
-	if (print_msg(phil, msg))
-		return (0);
-	pthread_mutex_unlock(phil -> write);
-	msleep_and_check(phil, time -> sleep_time);
-	return (1);
-}
-
-int	thinking(t_philosopher *phil, char *msg)
-{
-	if (print_msg(phil, msg))
-		return (0);
-	pthread_mutex_unlock(phil -> write);
-	return (1);
+	pthread_mutex_unlock(phil->left);
+	pthread_mutex_unlock(phil->right);
 }

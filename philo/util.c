@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/05 21:39:36 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 16:40:41 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,18 @@ long int	get_mstime(void)
 
 int	print_msg(t_philosopher *phil, char *msg)
 {
+	long int	time_delta;
+
 	pthread_mutex_lock(phil->write);
-	if (get_simulation_status(phil))
+	time_delta = get_mstime() - phil->glob_time;
+	if (!get_simulation_status(phil))
 	{
-		pthread_mutex_unlock(phil->write);
-		return (1);
+		printf("%ld %d %s\n", time_delta,
+			phil->id + 1, msg);
+		return (0);
 	}
-	printf("%ld %d %s\n", get_mstime() - phil->glob_time,
-		phil->id + 1, msg);
-	return (0);
+	pthread_mutex_unlock(phil->write);
+	return (1);
 }
 
 long int	str_to_int(char *str_digit, long int num)
@@ -43,12 +46,7 @@ long int	str_to_int(char *str_digit, long int num)
 	return (str_to_int(&(str_digit[1]), num));
 }
 
-void	msleep_and_check(t_philosopher *phil, long int time)
+void	msleep(long int time)
 {
-	long int	ref;
-
-	ref = get_mstime();
-	phil -> bites = -1;
-	while (get_mstime() - ref <= time)
-		usleep(10);
+	usleep(time * 1000);
 }
