@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:56:17 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 19:39:31 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 19:44:39 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	lonely_starvation(t_philosopher *phil)
 {
 	print_msg(phil, FORK);
 	pthread_mutex_unlock(phil -> write);
-	msleep(phil->time->death_time + 1);
+	msleep(phil->time->death_time + 10);
 	return ;
 }
 
