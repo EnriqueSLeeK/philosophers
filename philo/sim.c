@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:56:17 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 17:15:38 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 18:01:03 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,13 @@
 static void	*std_routine(void *data);
 static void	check_status(t_table *table);
 
-void	start_routine(t_table *table, long int *glob_time)
+void	start_routine(t_table *table)
 {
 	int	i;
 
 	i = -1;
-	*glob_time = get_mstime();
 	while (++i < table -> quant)
-	{
-		table->phi[i]->glob_time = *glob_time;
 		pthread_create(&(table->phi[i]->tid), 0, std_routine, table->phi[i]);
-	}
 	check_status(table);
 }
 
@@ -69,7 +65,6 @@ static void	*std_routine(void *data)
 	t_philosopher	*phil;
 
 	phil = (t_philosopher *)data;
-	phil -> last_bite = get_mstime();
 	if (phil->id % 2)
 		usleep(500);
 	if (phil -> right == phil -> left)
@@ -81,7 +76,6 @@ static void	*std_routine(void *data)
 			|| sleeping(phil)
 			|| think(phil))
 			break ;
-		//usleep(300);
 	}
 	release_fork(phil);
 	return (0);

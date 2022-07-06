@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 18:36:58 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 17:48:02 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 17:58:50 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ int	init_time(char **argv, t_time_inf *time)
 
 int	init_phil(t_philosopher **phil, t_table *table, t_time_inf *time)
 {
-	int	i;
+	int			i;
+	long int	glob_time;
 
 	i = 0;
+	glob_time = get_mstime();
 	while (i < table -> quant)
 	{
 		phil[i]->id = i;
@@ -41,8 +43,8 @@ int	init_phil(t_philosopher **phil, t_table *table, t_time_inf *time)
 		phil[i]->write = &(table -> write);
 		phil[i]->satisfaction = &(table -> satisfaction);
 		phil[i]->satiation = table -> satiation;
-		phil[i]->glob_time = 0;
-		phil[i]->last_bite = 0;
+		phil[i]->glob_time = glob_time;
+		phil[i]->last_bite = glob_time;
 		phil[i]->sim_end = &(table -> sim_end);
 		phil[i]->right = &(table -> fork_list[i]);
 		phil[i]->left = &(table -> fork_list[
