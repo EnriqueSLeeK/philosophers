@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 22:30:08 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/05 21:14:02 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/05 21:26:08 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static int	check_death(t_table *table)
 			pthread_mutex_unlock(&(table->write));
 			return (1);
 		}
-		//printf("%ld\n", get_last_bite(table->phi[i]) - now);
 		i += 1;
 	}
 	return (0);

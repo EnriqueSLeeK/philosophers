@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/05 21:15:47 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/05 21:39:36 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,10 @@ long int	str_to_int(char *str_digit, long int num)
 
 void	msleep_and_check(t_philosopher *phil, long int time)
 {
-	//usleep(time * 1000);
 	long int	ref;
 
 	ref = get_mstime();
-	if (!get_simulation_status(phil))
-	{
-		while (get_mstime() - ref <= time)
-			usleep(10);
-	}
+	phil -> bites = -1;
+	while (get_mstime() - ref <= time)
+		usleep(10);
 }
