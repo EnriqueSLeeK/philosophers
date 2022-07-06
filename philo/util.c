@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/05 15:13:18 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/05 21:15:47 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,29 +45,13 @@ long int	str_to_int(char *str_digit, long int num)
 
 void	msleep_and_check(t_philosopher *phil, long int time)
 {
+	//usleep(time * 1000);
 	long int	ref;
-	long int	now;
 
 	ref = get_mstime();
-	now = ref;
 	if (!get_simulation_status(phil))
 	{
 		while (get_mstime() - ref <= time)
-		{
-			if (get_simulation_status(phil))
-				break ;
-			if (!get_simulation_status(phil)
-				&& now - get_last_bite(phil)
-				>= (phil->time)-> death_time)
-			{
-
-				print_msg(phil, DEATH);
-				pthread_mutex_unlock(phil -> write);
-				simulation_end(phil);
-				break ;
-			}
 			usleep(10);
-			now = get_mstime();
-		}
 	}
 }

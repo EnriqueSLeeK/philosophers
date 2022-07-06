@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:43:16 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/05 15:09:05 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/05 20:52:34 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,16 @@ void	simulation_end(t_philosopher *phil)
 	pthread_mutex_unlock(&(phil -> eating));
 }
 
+long int	get_last_bite(t_philosopher *phil)
+{
+	long int	last_bite;
+
+	pthread_mutex_lock(&(phil -> eating));
+	last_bite = phil -> last_bite;
+	pthread_mutex_unlock(&(phil -> eating));
+	return (last_bite);
+}
+
 int		get_simulation_status(t_philosopher *phil)
 {
 	int	status;
@@ -37,12 +47,12 @@ int		get_simulation_status(t_philosopher *phil)
 	return (status);
 }
 
-long int	get_last_bite(t_philosopher *phil)
+int	get_bite(t_philosopher *phil)
 {
-	long int	last_bite;
+	int	bites;
 
 	pthread_mutex_lock(&(phil -> eating));
-	last_bite = phil -> last_bite;
+	bites = phil -> bites;
 	pthread_mutex_unlock(&(phil -> eating));
-	return (last_bite);
+	return (bites);
 }

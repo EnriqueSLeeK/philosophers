@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/05 15:01:39 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/05 18:39:14 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int				check_argv_is_number(char **str);
 
 // Critical reg
 int				get_simulation_status(t_philosopher *phil);
+int				get_bite(t_philosopher *phil);
 void			simulation_end(t_philosopher *phil);
 void			set_last_bite(t_philosopher *phil);
 long int		get_last_bite(t_philosopher *phil);

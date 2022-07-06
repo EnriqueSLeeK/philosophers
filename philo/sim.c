@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 22:30:08 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/05 15:05:19 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/05 21:14:02 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	start_routine(t_table *table, pthread_t *tid, long int *glob_time)
 {
 	int			n;
 
-	if (table -> satiation > -1)
-		pthread_create(tid, 0, eating_count_routine, (void *)(table));
 	n = 0;
 	*glob_time = get_mstime();
 	while (n < table -> quant)
@@ -33,6 +31,7 @@ void	start_routine(t_table *table, pthread_t *tid, long int *glob_time)
 			std_routine, (void *)(table -> phi[n]));
 		n += 1;
 	}
+	pthread_create(tid, 0, eating_count_routine, (void *)(table));
 }
 
 static int	check_bites(t_table *table)
@@ -40,13 +39,40 @@ static int	check_bites(t_table *table)
 	int	i;
 
 	i = 0;
-	while (table -> sim_end == 0 && i < table -> quant)
+	if (table -> satiation < 0)
+		return (0);
+	while (i < table -> quant
+		&& !get_simulation_status(table->phi[i]))
 	{
-		if ((table -> phi[i])->bites < table -> satiation)
+		if (get_bite(table->phi[i]) < table -> satiation)
 			return (0);
 		i += 1;
 	}
 	return (1);
+}
+
+static int	check_death(t_table *table)
+{
+	int			i;
+	long int	now;
+	
+	i = 0;
+	now = get_mstime();
+	while (i < table -> quant
+		&& !get_simulation_status(table->phi[i]))
+	{
+		if (now - get_last_bite(table->phi[i])
+			>= (table->phi[0]->time)->death_time)
+		{
+			print_msg(table->phi[i], DEATH);
+			simulation_end(table->phi[i]);
+			pthread_mutex_unlock(&(table->write));
+			return (1);
+		}
+		//printf("%ld\n", get_last_bite(table->phi[i]) - now);
+		i += 1;
+	}
+	return (0);
 }
 
 // Check how many times a philoshopher ate
@@ -57,11 +83,11 @@ static void	*eating_count_routine(void *data)
 	table = (t_table *)data;
 	while (!table -> sim_end)
 	{
-		if (check_bites(table))
+		if (check_death(table) || check_bites(table))
 			break ;
 	}
 	pthread_mutex_lock(&(table -> write));
-	table -> sim_end = 1;
+	simulation_end(table->phi[0]);
 	pthread_mutex_unlock(&(table -> write));
 	return (0);
 }
@@ -69,7 +95,6 @@ static void	*eating_count_routine(void *data)
 // Standard routine for each philosopher: eat -> sleep -> think -> loop
 static void	*std_routine(void *data)
 {
-//	pthread_t		tid;
 	t_philosopher	*phil;
 	t_time_inf		*time;
 
