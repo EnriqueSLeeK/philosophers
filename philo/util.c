@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 18:46:30 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 18:51:12 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	msleep(long int time)
 {
 	long int	t;
 
-	usleep((time - 1) * 1000);
 	t = get_mstime();
+	usleep((time - 1) * 1000);
 	while (get_mstime() - t < time)
 		usleep(25);
 }
