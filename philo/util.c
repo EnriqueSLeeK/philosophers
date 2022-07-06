@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 16:40:41 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 18:40:58 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 long int	get_mstime(void)
 {
 	t_time	time;
-	
+
 	gettimeofday(&time, 0);
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
@@ -25,9 +25,9 @@ int	print_msg(t_philosopher *phil, char *msg)
 	long int	time_delta;
 
 	pthread_mutex_lock(phil->write);
-	time_delta = get_mstime() - phil->glob_time;
 	if (!get_simulation_status(phil))
 	{
+		time_delta = get_mstime() - phil->glob_time;
 		printf("%ld %d %s\n", time_delta,
 			phil->id + 1, msg);
 		return (0);

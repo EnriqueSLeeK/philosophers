@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/04 18:36:58 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 18:41:53 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	print_msg(t_philosopher *phil, char *msg)
 
 	sem_wait(phil->write);
 	gettimeofday(&time_now, 0);
-	printf("%ld %d %s\n",  get_mstime() - phil->glob_time,
+	printf("%ld %d %s\n", get_mstime() - phil->glob_time,
 		phil->id + 1, msg);
 	return (0);
 }

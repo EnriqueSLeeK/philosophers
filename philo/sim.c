@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:56:17 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 18:01:03 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 18:41:11 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	start_routine(t_table *table)
 static void	check_status(t_table *table)
 {
 	int	i;
-	
+
 	i = 0;
 	while (!(table->sim_end))
 	{

@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:56:13 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 17:49:14 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 18:40:47 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	take_fork(t_philosopher *phil)
 	return (0);
 }
 
-int eat(t_philosopher *phil)
+int	eat(t_philosopher *phil)
 {
 	set_last_bite(phil);
 	if (print_msg(phil, EATING))
@@ -38,7 +38,7 @@ int eat(t_philosopher *phil)
 	return (0);
 }
 
-int sleeping(t_philosopher *phil)
+int	sleeping(t_philosopher *phil)
 {
 	print_msg(phil, SLEEPY);
 	pthread_mutex_unlock(phil->write);
@@ -46,7 +46,7 @@ int sleeping(t_philosopher *phil)
 	return (0);
 }
 
-int think(t_philosopher *phil)
+int	think(t_philosopher *phil)
 {
 	print_msg(phil, THINKING);
 	pthread_mutex_unlock(phil->write);

@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 17:59:48 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 18:40:23 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_table
 {
 	t_philosopher	**phi;
 	pthread_mutex_t	*fork_list;
-	pthread_mutex_t write;
+	pthread_mutex_t	write;
 	pthread_mutex_t	mtx_ex;
 	int				sim_end;
 	long int		quant;
