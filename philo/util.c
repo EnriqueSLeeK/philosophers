@@ -6,11 +6,22 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 18:51:12 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 20:00:54 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
+
+void	checking_death(t_philosopher *phil)
+{
+	if (get_mstime() - phil->last_bite
+		>= phil->time->death_time)
+	{
+		print_msg(phil, DEATH);
+		*(phil -> sim_end) = 1;
+		pthread_mutex_unlock(phil->write);
+	}
+}
 
 long int	get_mstime(void)
 {

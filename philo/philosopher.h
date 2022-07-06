@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 18:40:23 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 19:59:57 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void			**alloc_matrix(long int quant,
 
 void			wait_phil(t_table *table);
 long int		str_to_int(char *str_digit, long int num);
+void			checking_death(t_philosopher *phil);
 void			msleep(long int time);
 long int		get_mstime(void);
 
