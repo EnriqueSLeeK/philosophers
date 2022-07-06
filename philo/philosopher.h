@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:40:06 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 16:21:13 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 17:40:29 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ typedef struct s_philosopher
 	int				*sim_end;
 	long int		last_bite;
 	long int		glob_time;
-	long int		*satisfaction;
 	long int		satiation;
-	pthread_mutex_t	eating;
+	long int		*satisfaction;
+	pthread_mutex_t	*eating;
 	pthread_mutex_t	*write;
 	pthread_mutex_t	*right;
 	pthread_mutex_t	*left;
@@ -58,7 +58,8 @@ typedef struct s_table
 {
 	t_philosopher	**phi;
 	pthread_mutex_t	*fork_list;
-	pthread_mutex_t	write;
+	pthread_mutex_t write;
+	pthread_mutex_t	mtx_ex;
 	int				sim_end;
 	long int		quant;
 	long int		satiation;

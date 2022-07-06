@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:56:17 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 16:40:17 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 17:15:38 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static void	check_status(t_table *table)
 	int	i;
 	
 	i = 0;
-	usleep(500);
 	while (!(table->sim_end))
 	{
+		usleep(550);
 		if (get_satisfaction(table->phi[i]) == table->quant)
 		{
 			pthread_mutex_lock(&(table->write));
@@ -56,6 +56,14 @@ static void	check_status(t_table *table)
 	}
 }
 
+static void	lonely_starvation(t_philosopher *phil)
+{
+	print_msg(phil, FORK);
+	pthread_mutex_unlock(phil -> write);
+	msleep(phil->time->death_time + 1);
+	return ;
+}
+
 static void	*std_routine(void *data)
 {
 	t_philosopher	*phil;
@@ -64,13 +72,17 @@ static void	*std_routine(void *data)
 	phil -> last_bite = get_mstime();
 	if (phil->id % 2)
 		usleep(500);
-	while (!*(phil->sim_end))
+	if (phil -> right == phil -> left)
+		lonely_starvation(phil);
+	while (!get_simulation_status(phil))
 	{
 		if (take_fork(phil)
 			|| eat(phil)
 			|| sleeping(phil)
 			|| think(phil))
 			break ;
+		//usleep(300);
 	}
+	release_fork(phil);
 	return (0);
 }

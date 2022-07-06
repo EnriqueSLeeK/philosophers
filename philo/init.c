@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 18:36:58 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 16:24:03 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 17:48:02 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	init_phil(t_philosopher **phil, t_table *table, t_time_inf *time)
 		phil[i]->left = &(table -> fork_list[
 				(i + 1) % table -> quant]);
 		phil[i]->time = time;
-		pthread_mutex_init(&((phil[i])->eating), 0);
+		phil[i]->eating = &(table->mtx_ex);
 		i += 1;
 	}
 	return (1);
@@ -66,6 +66,8 @@ int	init_mutex(t_table *table)
 		i += 1;
 	}
 	if (pthread_mutex_init(&(table -> write), 0))
+		return (0);
+	if (pthread_mutex_init(&(table -> mtx_ex), 0))
 		return (0);
 	return (1);
 }

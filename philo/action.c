@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:56:13 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 16:36:32 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 17:49:14 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,10 @@
 int	take_fork(t_philosopher *phil)
 {
 	pthread_mutex_lock(phil->left);
+	pthread_mutex_lock(phil->right);
 	if (print_msg(phil, FORK))
 		return (1);
 	pthread_mutex_unlock(phil->write);
-	if (phil -> left == phil -> right)
-	{
-		msleep(phil->time->death_time + 1);
-		return (1);
-	}
-	pthread_mutex_lock(phil->right);
 	if (print_msg(phil, FORK))
 		return (1);
 	pthread_mutex_unlock(phil->write);
@@ -45,6 +40,8 @@ int eat(t_philosopher *phil)
 
 int sleeping(t_philosopher *phil)
 {
+	print_msg(phil, SLEEPY);
+	pthread_mutex_unlock(phil->write);
 	msleep(phil->time->sleep_time);
 	return (0);
 }
