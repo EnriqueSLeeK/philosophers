@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 22:59:56 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 18:40:58 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 18:46:30 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,10 @@ long int	str_to_int(char *str_digit, long int num)
 
 void	msleep(long int time)
 {
-	usleep(time * 1000);
+	long int	t;
+
+	usleep((time - 1) * 1000);
+	t = get_mstime();
+	while (get_mstime() - t < time)
+		usleep(25);
 }

@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:56:17 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 18:41:11 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 18:45:13 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	check_status(t_table *table)
 	i = 0;
 	while (!(table->sim_end))
 	{
-		usleep(550);
+		usleep(100);
 		if (get_satisfaction(table->phi[i]) == table->quant)
 		{
 			pthread_mutex_lock(&(table->write));
@@ -66,7 +66,7 @@ static void	*std_routine(void *data)
 
 	phil = (t_philosopher *)data;
 	if (phil->id % 2)
-		usleep(500);
+		usleep(750);
 	if (phil -> right == phil -> left)
 		lonely_starvation(phil);
 	while (!get_simulation_status(phil))
