@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:56:13 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 20:00:36 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 20:03:09 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	think(t_philosopher *phil)
 {
 	print_msg(phil, THINKING);
 	pthread_mutex_unlock(phil->write);
+	checking_death(phil);
 	return (0);
 }
 
