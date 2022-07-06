@@ -6,7 +6,7 @@
 /*   By: ensebast <ensebast@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:56:17 by ensebast          #+#    #+#             */
-/*   Updated: 2022/07/06 18:45:13 by ensebast         ###   ########.br       */
+/*   Updated: 2022/07/06 19:39:31 by ensebast         ###   ########.br       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,14 @@ static void	*std_routine(void *data)
 			|| sleeping(phil)
 			|| think(phil))
 			break ;
+		if (get_mstime() - phil->last_bite
+			>= phil->time->death_time)
+		{
+			print_msg(phil, DEATH);
+			*(phil -> sim_end) = 1;
+			pthread_mutex_unlock(phil->write);
+			break ;
+		}
 	}
 	release_fork(phil);
 	return (0);
