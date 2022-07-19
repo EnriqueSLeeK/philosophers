@@ -7,4 +7,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: make test
-        run: make
+        run: make -C philo && make -C philo_bonus
