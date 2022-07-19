@@ -1,6 +1,6 @@
 # philosophers &middot; [![Norminette](https://github.com/EnriqueSLeeK/philosophers/actions/workflows/norminette.yml/badge.svg)](https://github.com/EnriqueSLeeK/philosophers/actions/workflows/norminette.yml) &middot; [![make-test](https://github.com/EnriqueSLeeK/philosophers/actions/workflows/build.yml/badge.svg)](https://github.com/EnriqueSLeeK/philosophers/actions/workflows/build.yml)
 
-A classic problem about synchronization issues and techniques
+A classic problem about synchronization issues and techniques to solve it
 
 ## Mandatory section
  - It's about thread synchronization
